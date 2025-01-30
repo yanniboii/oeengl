@@ -1,5 +1,5 @@
 #version 330 core
-const float offset = 1.0 / 100.0;  
+const float offset = 1.0 / 600.0;  
 
 out vec4 FragColor;
 
@@ -25,6 +25,21 @@ void main()
         1, 2, 1,
         2, 4, 2,
         1, 2, 1
+    );    
+    float kernelEdge[9] = float[](
+        -1, -1, -1,
+        -1, 20, -1,
+        -1, -1, -1
+    );
+    float kernelDarkEdge[9] = float[](
+        50, 50, 50,
+        50, -500, 50,
+        50, 50, 50
+    );
+    float kernelBox[9] = float[](
+        1, 1, 1,
+        1, 1, 1,
+        1, 1, 1
     );
 
     vec3 sampleTexColors[9];
@@ -36,11 +51,11 @@ void main()
     vec4 col;
 
     for(int i = 0; i < 9; i++){
-        col += vec4(vec3(sampleTexColors[i]*kernel[i]),1.0f);
+        col += vec4(vec3(sampleTexColors[i]*kernelDarkEdge[i]),1.0f);
     };
 
     FragColor = col;
+    //FragColor = vec4(1.0f - vec3(texture(tex,texCoords)),1.0f);
 }
 
 // INVERSE
-    //FragColor = vec4(1.0f - vec3(texture(tex,texCoords)),1.0f);
