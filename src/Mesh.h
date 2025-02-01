@@ -27,8 +27,8 @@ public:
 	inline const std::vector<glm::fvec3>& GetPos() const { return position; }
 	inline const std::vector<glm::fvec3>& GetNormals() const { return normals; }
 
-	inline auto& GetVertexArray() { return va; }
-	inline auto& GetIndexBuffer() { return ib; }
+	inline VertexArray& GetVertexArray() { return va; }
+	inline IndexBuffer& GetIndexBuffer() { return ib; }
 
 	std::vector<unsigned int> GetFaces() const
 	{
@@ -76,6 +76,6 @@ private:
 	std::vector <glm::fvec2> uvs;
 	std::vector<Face> faces;
 
-	VertexArray& va;
-	IndexBuffer& ib;
+	VertexArray va;
+	IndexBuffer ib;
 };

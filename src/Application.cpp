@@ -47,6 +47,11 @@ void PrintMesh(std::vector<Vertex>& verts, std::vector<glm::fvec3>& vertPos, std
 	}
 }
 
+void GLAPIENTRY messageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+	std::cout << message << std::endl;
+
+}
+
 int main(void)
 {
 	float vertices[] = {
@@ -134,6 +139,7 @@ int main(void)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 		return -1;
 	}
+	std::cout << "bem" << std::endl;
 
 	// Set a clear color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -142,6 +148,7 @@ int main(void)
 	ObjFileReader fReader;
 	Mesh objCube = fReader.Read((ASSETSPATH + OBJPATH), false);
 	// ----------------------------------------------------------------------------- //
+	std::cout << "B" << std::endl;
 
 	VertexArray sva;
 	VertexBuffer* svb = new VertexBuffer(sizeof(vertices) * 3, &vertices[0]);
@@ -183,11 +190,15 @@ int main(void)
 
 	Renderer renderer;
 	glm::mat4 model = glm::mat4(1.0f);
+	std::cout << "C" << std::endl;
 
 	//model = translate(model, vec3(-4, 0, 0));
 	//model = glm::scale(model, vec3(1,1,1));
-
-/* Loop until the user closes the window */
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(messageCallback, 0);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
@@ -217,6 +228,7 @@ int main(void)
 		//projection = glm::ortho(0.0f, (float)RESOLUTION.x, 0.0f, (float)RESOLUTION.y, 0.1f, 100.0f);
 
 		shaderProgram.SetMatrix4("projection", projection);
+		//std::cout << "D" << std::endl;
 
 		/* Render here */
 		//fb.Bind();
@@ -224,6 +236,7 @@ int main(void)
 		//glEnable(GL_DEPTH_TEST);
 		renderer.Draw(objCube, shaderProgram);
 
+		//std::cout << "E" << std::endl;
 
 		//model = translate(model, vec3(4,0,0));
 		//shaderProgram.SetMatrix4("model", model);

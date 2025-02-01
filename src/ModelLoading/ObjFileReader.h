@@ -20,7 +20,7 @@ public:
 	void ParseObjectData(std::string& line, unsigned int endOfFirstWord, bool write);
 	void ParseVertexData(const std::string& dataType, std::string& line, unsigned int endOfFirstWord, bool write, std::vector<glm::fvec3>& v);
 	void ParseVertexData(const std::string& dataType, std::string& line, unsigned int endOfFirstWord, bool write, std::vector<glm::fvec2>& v);
-	void ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, std::vector<unsigned int>& inds, Mesh& mesh);
+	void ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, std::vector<unsigned int>& inds);
 
 	void AddFacePos(Mesh& mesh, std::vector<glm::fvec3> vertex, Face face);
 

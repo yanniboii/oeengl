@@ -14,19 +14,18 @@ Mesh ObjFileReader::Read(std::string filePath, bool write)
 	VertexArray va;
 	VertexBuffer* vb;
 	IndexBuffer ib;
-	Mesh mesh = Mesh(va, ib);
 
 	std::fstream fileStream;
 
+	std::vector<glm::fvec3> vPos;
+	std::vector<glm::fvec3> vNorm;
+	std::vector<glm::fvec2> vUVs;
+
+	std::vector<unsigned int> inds;
 	fileStream.exceptions(std::ifstream::badbit);
 	try {
 		fileStream.open(filePath);
 		std::string line;
-		std::vector<glm::fvec3> vPos;
-		std::vector<glm::fvec3> vNorm;
-		std::vector<glm::fvec2> vUVs;
-
-		std::vector<unsigned int> inds;
 
 		bool isDone = false;
 
@@ -59,21 +58,9 @@ Mesh ObjFileReader::Read(std::string filePath, bool write)
 				ParseVertexData("vt", line, endOfFirstWord, write, vUVs);
 
 			else if (firstWord == "f")
-				ParseFaceData(line, endOfFirstWord, write, inds, mesh);
+				ParseFaceData(line, endOfFirstWord, write, inds);
 
 		}
-		std::vector<Vertex> verts = AddVertexData(vPos, vNorm);
-
-		vb = new VertexBuffer(verts.size() * sizeof(Vertex), &verts[0]);
-
-		VertexBufferLayout layout;
-		layout.Push<float>(3);
-		layout.Push<float>(3);
-		layout.Push<float>(3);
-		layout.Push<float>(2);
-		va.AddBuffer(*vb, layout);
-
-		ib = IndexBuffer(&inds[0], inds.size());
 
 		fileStream.close();
 		std::cout << vnCount << std::endl;
@@ -83,13 +70,26 @@ Mesh ObjFileReader::Read(std::string filePath, bool write)
 	{
 		std::cout << exc.code() << exc.what() << std::endl;
 	}
+	std::vector<Vertex> verts = AddVertexData(vPos, vNorm);
+	std::cout << verts.size() << " : " << inds.size() << std::endl;
+	vb = new VertexBuffer(verts.size() * sizeof(Vertex), &verts[0]);
 
+	VertexBufferLayout layout;
+	layout.Push<float>(3);
+	layout.Push<float>(3);
+	layout.Push<float>(3);
+	layout.Push<float>(2);
+	va.AddBuffer(*vb, layout);
 
+	ib = IndexBuffer(&inds[0], inds.size());
+	std::cout << "A" << std::endl;
+
+	Mesh mesh = Mesh(va, ib);
 
 	return mesh;
 }
 
-void ObjFileReader::ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, std::vector<unsigned int>& inds, Mesh& mesh)
+void ObjFileReader::ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, std::vector<unsigned int>& inds)
 {
 	unsigned int endOfLine = line.find('\n');
 	std::string value = line.substr(endOfFirstWord, endOfLine);
@@ -118,7 +118,7 @@ void ObjFileReader::ParseFaceData(std::string& line, unsigned int endOfFirstWord
 		// Triangle: Add directly
 		Face face;
 		face.indeces = indices;
-		mesh.AddFace(face);
+		//mesh.AddFace(face);
 
 		inds.insert(
 			inds.end(),
@@ -132,8 +132,8 @@ void ObjFileReader::ParseFaceData(std::string& line, unsigned int endOfFirstWord
 		triangle1.indeces = { indices[0], indices[1], indices[2] };
 		triangle2.indeces = { indices[0], indices[2], indices[3] };
 
-		mesh.AddFace(triangle1);
-		mesh.AddFace(triangle2);
+		//mesh.AddFace(triangle1);
+		//mesh.AddFace(triangle2);
 
 		inds.insert(
 			inds.end(),
@@ -152,7 +152,7 @@ void ObjFileReader::ParseFaceData(std::string& line, unsigned int endOfFirstWord
 			Face triangle;
 			triangle.indeces = { indices[0], indices[i], indices[i + 1] };
 
-			mesh.AddFace(triangle);
+			//mesh.AddFace(triangle);
 
 			inds.insert(
 				inds.end(),
