@@ -2,21 +2,26 @@
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    shader.Use();
-    va.Bind();
-    ib.Bind();
+	shader.Use();
+	va.Bind();
+	ib.Bind();
 
-    glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::Draw(const GameObject& go) const
 {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void Renderer::Draw(Mesh& mesh, const Shader& shader) const
+{
+	Draw(mesh.GetVertexArray(), mesh.GetIndexBuffer(), shader);
 }
 
 void Renderer::Clear()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }

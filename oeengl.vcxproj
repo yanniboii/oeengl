@@ -25,8 +25,6 @@
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Material.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\ModelLoading\ObjFileReader.cpp" />
     <ClCompile Include="src\RenderBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -49,7 +47,6 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\ModelLoading\ObjFileReader.h" />
     <ClInclude Include="src\RenderBuffer.h" />
     <ClInclude Include="src\Renderer.h" />

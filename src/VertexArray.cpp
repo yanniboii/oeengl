@@ -31,52 +31,14 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 		glEnableVertexAttribArray(i);
 
 		glVertexAttribPointer(
-			i, 
-			element.count, 
-			element.type, 
-			element.normalized, 
-			layout.GetStride(), 
+			i,
+			element.count,
+			element.type,
+			element.normalized,
+			layout.GetStride(),
 			(const void*)offset);
 
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 	}
 
-}
-void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout, const bool isVertex)
-{
-	Bind();
-	vb.Bind();
-	const auto& elements = layout.GetElements();
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(
-			0,
-			elements[0].count,
-			elements[0].type,
-			elements[0].normalized,
-			sizeof(Vertex),
-			(const void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(
-			1,
-			elements[1].count,
-			elements[1].type,
-			elements[1].normalized,
-			sizeof(Vertex),
-			(const void*)offsetof(Vertex, colors));		
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(
-			2,
-			elements[2].count,
-			elements[2].type,
-			elements[2].normalized,
-			sizeof(Vertex),
-			(const void*)offsetof(Vertex, normals));
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(
-			3,
-			elements[3].count,
-			elements[3].type,
-			elements[3].normalized,
-			sizeof(Vertex),
-			(const void*)offsetof(Vertex, uvs));
 }

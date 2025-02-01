@@ -13,7 +13,6 @@ public:
 	void Unbind() const;
 
 	void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
-	void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout, const bool isVertex);
 private:
 	unsigned int m_RendererID;
 };

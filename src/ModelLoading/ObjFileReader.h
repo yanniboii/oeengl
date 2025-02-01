@@ -3,26 +3,26 @@
 #include <fstream>
 #include <sstream>
 #include <glm/glm.hpp>
-#include "../Mesh.h"
 #include <algorithm>
 #include <vector>
 #include <cctype>
+#include "../Mesh.h"
 
 class ObjFileReader {
 public:
 	ObjFileReader();
 	~ObjFileReader();
 
-	Mesh Read(std::string filePath, bool write = false, bool old = false);
+	Mesh Read(std::string filePath, bool write = false);
 
-	void AddVertexData(std::vector<glm::fvec3>& vPos, std::vector<glm::fvec3> vNorm, Mesh& mesh);
+	std::vector<Vertex> AddVertexData(std::vector<glm::fvec3>& vPos, std::vector<glm::fvec3> vNorm);
 
 	void ParseObjectData(std::string& line, unsigned int endOfFirstWord, bool write);
 	void ParseVertexData(const std::string& dataType, std::string& line, unsigned int endOfFirstWord, bool write, std::vector<glm::fvec3>& v);
-	void ParseVertexData(const std::string & dataType, std::string& line, unsigned int endOfFirstWord, bool write, std::vector<glm::fvec2>& v);
-	void ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, Mesh& mesh, std::vector<glm::fvec3> vPos, bool old);
-	
-	void AddFacePos(Mesh& mesh, vector<fvec3> vertex, Face face);
+	void ParseVertexData(const std::string& dataType, std::string& line, unsigned int endOfFirstWord, bool write, std::vector<glm::fvec2>& v);
+	void ParseFaceData(std::string& line, unsigned int endOfFirstWord, bool write, std::vector<unsigned int>& inds, Mesh& mesh);
+
+	void AddFacePos(Mesh& mesh, std::vector<glm::fvec3> vertex, Face face);
 
 	void Save();
 
