@@ -33,16 +33,17 @@ void Camera::Move(GLFWwindow* window)
 
 void Camera::Rotate(GLFWwindow* window)
 {
+	float speed = 1;
 	double xPos = oldX, yPos = oldY;
 	//glfwGetCursorPos(window, &xPos, &yPos);
 	if (glfwGetKey(window, GLFW_KEY_UP))
-		yPos += 10;
+		yPos += -speed;
 	if (glfwGetKey(window, GLFW_KEY_DOWN))
-		yPos += -10;
+		yPos += speed;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT))
-		xPos += 10;
+		xPos += speed;
 	if (glfwGetKey(window, GLFW_KEY_LEFT))
-		xPos += -10;
+		xPos += -speed;
 	// Calculate mouse movement deltas
 	double xOffset = xPos - oldX;
 	double yOffset = oldY - yPos;
