@@ -3,7 +3,7 @@
 #include <iostream>
 
 Camera::Camera(vec3 position, fvec3 worldUp)
-	: m_Position(position), worldUp(worldUp), yaw(10.0f), pitch(0.0f)
+	: m_Position(position), worldUp(worldUp), yaw(90.0f), pitch(0.0f)
 {
 	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	UpdateCameraVectors();
@@ -17,10 +17,10 @@ void Camera::Move(GLFWwindow* window)
 {
 	const float speed = 0.03f;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		m_Position -= speed * cameraFront;
+		m_Position += speed * cameraFront;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		m_Position += speed * cameraFront;
+		m_Position -= speed * cameraFront;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		m_Position += speed * cameraRight;
@@ -33,9 +33,17 @@ void Camera::Move(GLFWwindow* window)
 
 void Camera::Rotate(GLFWwindow* window)
 {
-	double xPos, yPos;
-	glfwGetCursorPos(window, &xPos, &yPos);
-
+	float speed = 1;
+	double xPos = oldX, yPos = oldY;
+	//glfwGetCursorPos(window, &xPos, &yPos);
+	if (glfwGetKey(window, GLFW_KEY_UP))
+		yPos += -speed;
+	if (glfwGetKey(window, GLFW_KEY_DOWN))
+		yPos += speed;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT))
+		xPos += speed;
+	if (glfwGetKey(window, GLFW_KEY_LEFT))
+		xPos += -speed;
 	// Calculate mouse movement deltas
 	double xOffset = xPos - oldX;
 	double yOffset = oldY - yPos;
@@ -84,6 +92,6 @@ void Camera::UpdateCameraVectors()
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
 
-	cameraRight = glm::normalize(glm::cross(cameraFront, worldUp)); 
-	cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront)); 
+	cameraRight = glm::normalize(glm::cross(cameraFront, worldUp));
+	cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 }
