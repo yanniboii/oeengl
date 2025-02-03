@@ -22,9 +22,12 @@ private:
 
 class RenderObject {
 public:
-	RenderObject();
-	~RenderObject();
+	RenderObject(Mesh* mesh, Material* mat) :mesh(mesh), mat(mat) {}
+	~RenderObject() {}
+
+	inline Mesh& GetMesh() { return *mesh; }
+	inline Material& GetMaterial() { return *mat; }
 private:
-	Mesh mesh;
-	Material mat;
+	Mesh* mesh;
+	Material* mat;
 };

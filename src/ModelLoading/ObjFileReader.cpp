@@ -9,11 +9,11 @@ ObjFileReader::~ObjFileReader()
 {
 }
 
-Mesh ObjFileReader::Read(std::string filePath, bool write)
+Mesh* ObjFileReader::Read(std::string filePath, bool write)
 {
-	VertexArray va;
+	VertexArray* va = new VertexArray();
 	VertexBuffer* vb;
-	IndexBuffer ib;
+	IndexBuffer* ib;
 
 	std::fstream fileStream;
 
@@ -79,12 +79,12 @@ Mesh ObjFileReader::Read(std::string filePath, bool write)
 	layout.Push<float>(3);
 	layout.Push<float>(3);
 	layout.Push<float>(2);
-	va.AddBuffer(*vb, layout);
+	va->AddBuffer(*vb, layout);
 
-	ib = IndexBuffer(&inds[0], inds.size());
+	ib = new IndexBuffer(&inds[0], inds.size());
 	std::cout << "A" << std::endl;
 
-	Mesh mesh = Mesh(va, ib);
+	Mesh* mesh = new Mesh(va, ib);
 
 	return mesh;
 }

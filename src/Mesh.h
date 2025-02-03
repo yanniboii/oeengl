@@ -19,7 +19,7 @@ struct Face {
 
 class Mesh {
 public:
-	Mesh(VertexArray& va, IndexBuffer& ib)
+	Mesh(VertexArray* va, IndexBuffer* ib)
 		: va(va), ib(ib) {}
 
 	inline const std::vector<Vertex>& GetVertices() const { return vertices; }
@@ -27,8 +27,8 @@ public:
 	inline const std::vector<glm::fvec3>& GetPos() const { return position; }
 	inline const std::vector<glm::fvec3>& GetNormals() const { return normals; }
 
-	inline VertexArray& GetVertexArray() { return va; }
-	inline IndexBuffer& GetIndexBuffer() { return ib; }
+	inline VertexArray& GetVertexArray() { return *va; }
+	inline IndexBuffer& GetIndexBuffer() { return *ib; }
 
 	std::vector<unsigned int> GetFaces() const
 	{
@@ -76,6 +76,6 @@ private:
 	std::vector <glm::fvec2> uvs;
 	std::vector<Face> faces;
 
-	VertexArray va;
-	IndexBuffer ib;
+	VertexArray* va;
+	IndexBuffer* ib;
 };

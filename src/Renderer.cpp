@@ -21,6 +21,11 @@ void Renderer::Draw(const GameObject& go) const
 {
 
 }
+void Renderer::Draw(const RenderObject& ro) const
+{
+
+	//Draw();
+}
 
 void Renderer::Clear()
 {

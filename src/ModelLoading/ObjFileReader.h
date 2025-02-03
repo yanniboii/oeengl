@@ -13,7 +13,7 @@ public:
 	ObjFileReader();
 	~ObjFileReader();
 
-	Mesh Read(std::string filePath, bool write = false);
+	Mesh* Read(std::string filePath, bool write = false);
 
 	std::vector<Vertex> AddVertexData(std::vector<glm::fvec3>& vPos, std::vector<glm::fvec3> vNorm);
 

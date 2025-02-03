@@ -1,13 +1,17 @@
 #pragma once
 #include "Shader.h"
-#include <glm/glm.hpp>
 
 class Material {
 public:
-	Shader Shader;
+	Material(Shader* shader);
+	~Material();
+
+	void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
 	glm::vec4 GetColor();
 	void SetColor(glm::vec4 color);
+
 private:
 	glm::vec4 color;
+	Shader* mShader;
 };

@@ -20,13 +20,9 @@ out vec3 vViewPos;
 
 void main()
 {
-//	vec3 animatedPos = aPos;
-//	animatedPos.x += sin(time*4)/2;
-//	animatedPos.y += cos(time)/2;
 	vec4 rotatedPos = vec4(aPos,1.0f);
 	mat4 mvp = projection * view * model;
 	gl_Position = mvp * rotatedPos;
-	//gl_Position = transform * vec4(aPos,1.0f);
 	vTime = time;
 	vCol = aCol;
 	vNorm = aNorm;
