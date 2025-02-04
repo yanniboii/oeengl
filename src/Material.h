@@ -11,7 +11,7 @@ public:
 	glm::vec4 GetColor();
 	void SetColor(glm::vec4 color);
 
+	Shader* mShader;
 private:
 	glm::vec4 color;
-	Shader* mShader;
 };

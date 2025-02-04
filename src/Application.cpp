@@ -20,7 +20,6 @@ const std::string VERTEXPATH = "VertexShader.vert";
 const std::string FRAGMENTPATH = "FragmentShader.frag";
 const std::string OBJPATH = "Models/teapot.obj";
 // C: / Dev / oeengl / assets / Shaders / VertexShader.vert
-const glm::ivec2 RESOLUTION = glm::ivec2(1920 / 2, 1080 / 2);
 
 void PrintMatrix(glm::mat4& view)
 {
@@ -89,13 +88,18 @@ int main(void)
 	// ----------------------------------------------------------------------------- //
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glm::mat4 view;
-	Camera camera(vec3(0.0f, 0.0f, -10.0f), glm::vec3(0, 1, 0));
+	Camera* camera = new Camera(vec3(0.0f, 0.0f, -10.0f), glm::vec3(0, 1, 0));
+
 
 	Renderer renderer;
+	renderer.SetActiveCamera(camera);
 	glm::mat4 model = glm::mat4(1.0f);
 
 	Material* mat = new Material(shaderProgram);
-	RenderObject ro = RenderObject(objCube, mat);
+	RenderObject* ro = new RenderObject(objCube, mat);
+
+	GameObject* go = new GameObject(model);
+	go->AddRenderObject(ro);
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -106,19 +110,9 @@ int main(void)
 	{
 		renderer.Clear();
 
-		// Camera transform
-		glm::mat4 view = glm::mat4(1.0f);
+		camera->Update(window);
 
-		camera.Update(window);
-		view = camera.GetViewMatrix();
-
-		// projection
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), (float)RESOLUTION.x / RESOLUTION.y, 0.1f, 100.0f);
-		//projection = glm::ortho(0.0f, (float)RESOLUTION.x, 0.0f, (float)RESOLUTION.y, 0.1f, 100.0f);
-
-		mat->Render(model, view, projection);
-		renderer.Draw(*objCube, *shaderProgram);
+		renderer.Draw(go);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
