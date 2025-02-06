@@ -3,7 +3,6 @@
 
 VertexArray::VertexArray()
 {
-	std::cout << "gem" << std::endl;
 	glGenVertexArrays(1, &m_RendererID);
 }
 

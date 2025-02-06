@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "Mesh.h"
-#include "Material.h"
+#include "RenderObject.h"
 
 class RenderObject;
 
 class GameObject {
 public:
+	GameObject() {};
 	GameObject(glm::mat4 transform) :transform(transform) {};
 	~GameObject();
 
@@ -16,6 +16,8 @@ public:
 	std::vector<RenderObject*> GetRenderObjects() { return renderObjects; };
 
 	std::vector<GameObject*>& GetChildren() { return children; };
+
+	int ChildCount() { return children.size(); };
 
 	void AddRenderObject(RenderObject* ro) { renderObjects.push_back(ro); };
 
@@ -34,16 +36,4 @@ private:
 	glm::mat4 transform;
 	std::vector<GameObject*> children;
 	std::vector<RenderObject*> renderObjects;
-};
-
-class RenderObject {
-public:
-	RenderObject(Mesh* mesh, Material* mat) :mesh(mesh), mat(mat) {}
-	~RenderObject() {}
-
-	inline Mesh* GetMesh() { return mesh; }
-	inline Material* GetMaterial() { return mat; }
-private:
-	Mesh* mesh;
-	Material* mat;
 };

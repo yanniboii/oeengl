@@ -51,6 +51,8 @@
     <ClInclude Include="src\ModelLoading\ObjFileReader.h" />
     <ClInclude Include="src\RenderBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RenderObject.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\TextureBuffer.h" />
     <ClInclude Include="src\VertexArray.h" />

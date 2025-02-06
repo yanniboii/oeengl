@@ -13,9 +13,20 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 	glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Renderer::Draw(GameObject& go) const
+void Renderer::Draw(Scene* scene) const
 {
+	if (scene->ChildCount() <= 0)
+		return;
 
+	std::vector<GameObject*> children = scene->GetChildren();
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		if (children[i]->ChildCount() > 0)
+			Draw(children[i], true);
+		else
+			Draw(children[i]);
+	}
 }
 
 
@@ -24,15 +35,29 @@ void Renderer::Draw(Mesh& mesh, const Shader& shader) const
 	Draw(mesh.GetVertexArray(), mesh.GetIndexBuffer(), shader);
 }
 
-void Renderer::Draw(GameObject* go) const
+void Renderer::Draw(GameObject* go, bool recursive) const
 {
-	std::vector<RenderObject*> renderObjects = go->GetRenderObjects();
 	// TODO: find a better place for this now it is called every time I draw 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)RESOLUTION.x / RESOLUTION.y, 0.1f, 100.0f);
+
+	std::vector<RenderObject*> renderObjects = go->GetRenderObjects();
 
 	for (int i = 0; i < renderObjects.size(); i++) {
 
 		Draw(*renderObjects[i], go->GetTransform(), camera->GetViewMatrix(), projection);
+	}
+
+	if (!recursive)
+		return;
+
+	std::vector<GameObject*> children = go->GetChildren();
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		if (children[i]->ChildCount() > 0)
+			Draw(children[i], true);
+		else
+			Draw(children[i]);
 	}
 }
 

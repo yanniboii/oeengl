@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Camera.h"
 #include <sstream>
 #include <string>
 #include "Application.h"
@@ -75,6 +74,10 @@ int main(void)
 
 	// Set a clear color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(messageCallback, 0);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
 	// ----------------------------------------------------------------------------- //
 
@@ -98,13 +101,23 @@ int main(void)
 	Material* mat = new Material(shaderProgram);
 	RenderObject* ro = new RenderObject(objCube, mat);
 
-	GameObject* go = new GameObject(model);
-	go->AddRenderObject(ro);
+	Scene* scene = new Scene();
 
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(messageCallback, 0);
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+	GameObject* go = new GameObject(model);
+	GameObject* go2 = new GameObject(model);
+	GameObject* go3 = new GameObject(model);
+
+	go2->SetPosition(glm::vec3(2, 2, 2));
+	go3->SetPosition(glm::vec3(5, 2, 2));
+
+	go->AddRenderObject(ro);
+	go2->AddRenderObject(ro);
+	go3->AddRenderObject(ro);
+
+	scene->AddChild(go);
+	go->AddChild(go2);
+	go2->AddChild(go3);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -112,7 +125,7 @@ int main(void)
 
 		camera->Update(window);
 
-		renderer.Draw(go);
+		renderer.Draw(scene);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
