@@ -23,10 +23,9 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Material.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\ModelLoading\ObjFileReader.cpp" />
     <ClCompile Include="src\RenderBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -49,10 +48,11 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\ModelLoading\ObjFileReader.h" />
     <ClInclude Include="src\RenderBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RenderObject.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\TextureBuffer.h" />
     <ClInclude Include="src\VertexArray.h" />
