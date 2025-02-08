@@ -3,8 +3,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <algorithm>
-#include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "../Abstraction/LowAbstraction/VertexArray.h"
+#include "../Abstraction/LowAbstraction/IndexBuffer.h"
 
 struct Vertex {
 	glm::fvec3 postion = glm::fvec3(0, 0, 0);

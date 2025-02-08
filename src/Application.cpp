@@ -6,10 +6,10 @@
 #include <sstream>
 #include <string>
 #include "Application.h"
-#include "FrameBuffer.h"
-#include "RenderBuffer.h"
-#include "TextureBuffer.h"
-#include "Renderer.h"
+#include "Abstraction/LowAbstraction/FrameBuffer.h"
+#include "Abstraction/LowAbstraction/RenderBuffer.h"
+#include "Abstraction/LowAbstraction/TextureBuffer.h"
+#include "Abstraction/HighAbstraction/Renderer.h"
 #include <algorithm>
 #include "ModelLoading/ObjFileReader.h"
 

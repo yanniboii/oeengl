@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
-#include "../Mesh.h"
+#include "../Abstraction/HighAbstraction/Mesh.h"
 
 class ObjFileReader {
 public:

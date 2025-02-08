@@ -1,6 +1,6 @@
 #include "Renderer.h"
-#include "Application.h"
-
+#include "../../Application.h"
+// TODO: this is a cyclical reference clean up some day 
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 {

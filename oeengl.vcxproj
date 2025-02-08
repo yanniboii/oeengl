@@ -21,18 +21,18 @@
   <ItemGroup>
     <ClCompile Include="RenderDoc\RenderDocInitializer.cpp" />
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\FrameBuffer.cpp" />
-    <ClCompile Include="src\GameObject.cpp" />
-    <ClCompile Include="src\IndexBuffer.cpp" />
-    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\Camera.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\FrameBuffer.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\GameObject.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\IndexBuffer.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\Material.cpp" />
     <ClCompile Include="src\ModelLoading\ObjFileReader.cpp" />
-    <ClCompile Include="src\RenderBuffer.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\TextureBuffer.cpp" />
-    <ClCompile Include="src\VertexArray.cpp" />
-    <ClCompile Include="src\VertexBuffer.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\RenderBuffer.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\Renderer.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\Shader.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\TextureBuffer.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\VertexArray.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Shaders\FragmentShader.frag" />
@@ -42,22 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\FrameBuffer.h" />
-    <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\IndexBuffer.h" />
-    <ClInclude Include="src\Material.h" />
-    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\Camera.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\FrameBuffer.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\GameObject.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\IndexBuffer.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\Material.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\Mesh.h" />
     <ClInclude Include="src\ModelLoading\ObjFileReader.h" />
-    <ClInclude Include="src\RenderBuffer.h" />
-    <ClInclude Include="src\Renderer.h" />
-    <ClInclude Include="src\RenderObject.h" />
-    <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\TextureBuffer.h" />
-    <ClInclude Include="src\VertexArray.h" />
-    <ClInclude Include="src\VertexBuffer.h" />
-    <ClInclude Include="src\VertexBufferLayout.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\RenderBuffer.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\Renderer.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\RenderObject.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\Scene.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\Shader.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\TextureBuffer.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\VertexArray.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\VertexBuffer.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\VertexBufferLayout.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
