@@ -1,6 +1,12 @@
 #include "Material.h"
+#include "Scene.h"
 
-Material::Material(Shader* shader) : mShader(shader)
+Material::Material(Shader* shader) : shader(shader), color(glm::vec3(1, 1, 1))
+{
+
+}
+
+Material::Material(Shader* shader, glm::vec3 color) : shader(shader), color(color)
 {
 
 }
@@ -9,28 +15,33 @@ Material::~Material()
 {
 }
 
-void Material::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void Material::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Scene* scene)
 {
-	mShader->Use();
+	shader->Use();
 
 	float currentTime = glfwGetTime();
 
-	mShader->SetFloat("time", currentTime);
+	Light light = *scene->GetLights()[0];
 
-	mShader->SetVector3("viewPos", view[3]);
+	shader->SetFloat("time", currentTime);
+	shader->SetVector3("m_Ambient", color);
+	shader->SetVector3("m_Diffuse", light.GetLightColor());
+	shader->SetVector3("m_LightPos", light.GetPosition());
 
-	mShader->SetMatrix4("model", model);
-	mShader->SetMatrix4("view", view);
-	mShader->SetMatrix4("projection", projection);
+	shader->SetVector3("viewPos", view[3]);
+
+	shader->SetMatrix4("model", model);
+	shader->SetMatrix4("view", view);
+	shader->SetMatrix4("projection", projection);
 
 }
 
-glm::vec4 Material::GetColor()
+glm::vec3 Material::GetColor()
 {
-	return glm::vec4();
+	return color;
 }
 
-void Material::SetColor(glm::vec4 color)
+void Material::SetColor(glm::vec3 color)
 {
 	this->color = color;
 }

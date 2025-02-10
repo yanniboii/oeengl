@@ -6,17 +6,17 @@ in vec3 vNorm;
 in vec3 FragPos;
 in vec3 vViewPos;
 
-vec3 m_LightPos = vec3(-4,5,0);
+uniform vec3 m_LightPos;
 float m_LightIntensity = 0.5;
 
-vec3 m_Ambient = vec3(0,1,0);
+uniform vec3 m_Ambient;
 float m_AmbientIntensity = 0.4f;
 
-vec3 m_Diffuse = vec3(1,0.9f,0.6f);
+uniform vec3 m_Diffuse;
 float m_DiffuseReflectionCoefficient = 0.7f;
 
 vec3 m_Specular = vec3(0,0,1);
-float m_SpecularShininess = 256;
+float m_SpecularShininess = 8;
 float m_SpecularReflectifity = 0.8f;
 
 

@@ -89,23 +89,25 @@ int main(void)
 	Shader* shaderProgram = new Shader(SHADERPATH + VERTEXPATH, SHADERPATH + FRAGMENTPATH);
 
 	// ----------------------------------------------------------------------------- //
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	glm::mat4 view;
 	Camera* camera = new Camera(vec3(0.0f, 0.0f, -10.0f), glm::vec3(0, 1, 0));
 
-
 	Renderer renderer;
 	renderer.SetActiveCamera(camera);
-	glm::mat4 model = glm::mat4(1.0f);
 
-	Material* mat = new Material(shaderProgram);
+	Material* mat = new Material(shaderProgram, glm::vec3(1.0f, 1.0f, 1.0f));
 	RenderObject* ro = new RenderObject(objCube, mat);
 
 	Scene* scene = new Scene();
 
-	GameObject* go = new GameObject(model);
-	GameObject* go2 = new GameObject(model);
-	GameObject* go3 = new GameObject(model);
+	GameObject* go = new GameObject();
+	GameObject* go2 = new GameObject();
+	GameObject* go3 = new GameObject();
+	Light* light = new Light();
+
+	light->SetPosition(glm::vec3(20, 4, 0));
+	light->SetLightColor(glm::vec3(1, 0, 0));
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
 	go3->SetPosition(glm::vec3(5, 2, 2));
@@ -117,7 +119,7 @@ int main(void)
 	scene->AddChild(go);
 	go->AddChild(go2);
 	go2->AddChild(go3);
-
+	scene->AddLight(light);
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
