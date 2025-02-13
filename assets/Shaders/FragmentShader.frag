@@ -6,42 +6,74 @@ in vec3 vNorm;
 in vec3 FragPos;
 in vec3 vViewPos;
 
+struct Material{
+    vec4 ambientColor;
+    vec4 diffuseColor;
+    vec4 specularColor;
+
+    float ambientCoefficient;
+    float diffuseCoefficient;
+    float specularCoefficient;
+
+    float specularShininess;
+};
+
+struct Light{
+    vec4 ambientColor;
+    vec4 diffuseColor;
+    vec4 specularColor;
+
+    float ambientIntensity;
+    float diffuseIntensity;
+    float specularIntensity;
+
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+uniform Material material;
+uniform Light light;
+
 uniform vec3 m_LightPos;
-float m_LightIntensity = 0.5;
-
-uniform vec3 m_Ambient;
-float m_AmbientIntensity = 0.4f;
-
-uniform vec3 m_Diffuse;
-float m_DiffuseReflectionCoefficient = 0.7f;
-
-vec3 m_Specular = vec3(0,0,1);
-float m_SpecularShininess = 8;
-float m_SpecularReflectifity = 0.8f;
 
 
 void main()
 {
-    vec3 col = vCol+vec3(sin(vTime));
-    vec3 a = m_Ambient * m_AmbientIntensity;
+    vec4 a = material.ambientColor * light.ambientColor * material.ambientCoefficient * light.ambientIntensity;
 
     vec3 norm = normalize(vNorm);
-    vec3 lightDir = normalize(vec3(m_LightPos - FragPos))   ;
+    vec3 lightDist = vec3(m_LightPos - FragPos);
+    vec3 lightDir = normalize(lightDist);
 
-    float diffuseIntensity = m_DiffuseReflectionCoefficient * m_LightIntensity * max(0,dot(norm,lightDir));
-    vec3 d = diffuseIntensity * m_Diffuse;
+    float diff =    light.diffuseIntensity * 
+                    material.diffuseCoefficient *
+                    max(0,dot(norm,lightDir));
+
+    vec4 d =    diff * 
+                material.diffuseColor * 
+                light.diffuseColor;
 
     vec3 reflection = reflect(-lightDir, norm);
     vec3 viewDir = normalize(vViewPos - FragPos);
 
-    float specularIntesity = (
+    float spec = (
     pow(max(0,dot(reflection,viewDir)), 
-    m_SpecularShininess));
+    material.specularShininess));
 
-    vec3 s = specularIntesity * m_Specular * m_SpecularReflectifity;
+    vec4 s =    spec * 
+                light.specularColor * 
+                material.specularColor * 
+                material.specularCoefficient * 
+                light.specularIntensity;
 
-    vec3 ad = a + d;
-    vec3 ads = a + d + s;
+    vec4 ds = d + s;
+    vec4 attenuation =  ds / 
+                        (light.constant + 
+                        light.linear * length(lightDist) + 
+                        light.quadratic * pow(length(lightDist),2));
+    vec4 ad = a + d;
+    vec4 ads = a + attenuation;
 
-    FragColor = vec4(ads.xyz, 1.0f);
+    FragColor = ads;
 } 

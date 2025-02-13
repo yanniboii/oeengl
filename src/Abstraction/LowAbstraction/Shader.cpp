@@ -46,10 +46,10 @@ Shader::Shader(const std::string vertexPath, const std::string fragmentPath)
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShaderID, 1, &vertexShaderCode, NULL);
 	glCompileShader(vertexShaderID);
-	
+
 	int vSucces;
 	char vInfo[512];
-	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS,&vSucces);
+	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &vSucces);
 	if (!vSucces) {
 		glGetShaderInfoLog(vertexShaderID, 512, NULL, vInfo);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << vInfo << std::endl;
@@ -85,7 +85,7 @@ Shader::Shader(const std::string vertexPath, const std::string fragmentPath)
 
 }
 
-Shader::Shader(const char* shaderPath) 
+Shader::Shader(const char* shaderPath)
 {
 	ID = glCreateProgram();
 }
@@ -100,7 +100,7 @@ void Shader::Use() const
 	glUseProgram(ID);
 }
 
-void Shader::SetFloat(const GLchar *valueName,float value) {
+void Shader::SetFloat(const GLchar* valueName, float value) {
 	int valueLoc = glGetUniformLocation(ID, valueName);
 	glUniform1f(valueLoc, value);
 }
@@ -109,6 +109,12 @@ void Shader::SetVector3(const GLchar* valueName, glm::vec3 value)
 {
 	int valueLoc = glGetUniformLocation(ID, valueName);
 	glUniform3fv(valueLoc, 1, glm::value_ptr(value));
+}
+
+void Shader::SetVector4(const GLchar* valueName, glm::vec4 value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform4fv(valueLoc, 1, glm::value_ptr(value));
 }
 
 void Shader::SetMatrix4(const GLchar* valueName, glm::mat4 value)

@@ -96,7 +96,7 @@ int main(void)
 	Renderer renderer;
 	renderer.SetActiveCamera(camera);
 
-	Material* mat = new Material(shaderProgram, glm::vec3(1.0f, 1.0f, 1.0f));
+	Material* mat = new Material(shaderProgram, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	RenderObject* ro = new RenderObject(objCube, mat);
 
 	Scene* scene = new Scene();
@@ -107,10 +107,10 @@ int main(void)
 	Light* light = new Light();
 
 	light->SetPosition(glm::vec3(20, 4, 0));
-	light->SetLightColor(glm::vec3(1, 0, 0));
+	light->SetQuadraticAttenuation(1.0f);
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
-	go3->SetPosition(glm::vec3(5, 2, 2));
+	go3->SetPosition(glm::vec3(15, 2, 2));
 
 	go->AddRenderObject(ro);
 	go2->AddRenderObject(ro);
