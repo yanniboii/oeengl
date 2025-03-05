@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RenderDoc\RenderDocInitializer.cpp" />
+    <ClCompile Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Abstraction\HighAbstraction\Camera.cpp" />
     <ClCompile Include="src\Abstraction\LowAbstraction\FrameBuffer.cpp" />
@@ -42,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Abstraction\HighAbstraction\Light.h" />
+    <ClInclude Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Camera.h" />
     <ClInclude Include="src\Abstraction\LowAbstraction\FrameBuffer.h" />

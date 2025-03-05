@@ -4,9 +4,9 @@
 Material::Material(Shader* shader) :
 	shader(shader),
 	ambientColor(glm::vec4(1, 1, 1, 1)),
-	diffuseColor(glm::vec4(1, 0.9f, 0.6f, 1)),
-	specularColor(glm::vec4(0.1f, 1, 0.1f, 1)),
-	ambientCoefficient(0.4f),
+	diffuseColor(glm::vec4(0, 1, 0, 1)),
+	specularColor(glm::vec4(1, 0, 0, 1)),
+	ambientCoefficient(0.1f),
 	diffuseCoefficient(0.7f),
 	specularShininess(256),
 	specularCoefficient(0.8f)
@@ -37,9 +37,6 @@ void Material::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Sce
 
 	float currentTime = glfwGetTime();
 
-	Light light = *scene->GetLights()[0];
-	LightData lightData = light.GetLightData();
-
 	shader->SetFloat("time", currentTime);
 
 	// ----------------------------------------------------------------------------- //
@@ -56,21 +53,23 @@ void Material::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection, Sce
 
 	// ----------------------------------------------------------------------------- //
 
-	shader->SetVector4("light.ambientColor", lightData.ambientColor);
-	shader->SetVector4("light.diffuseColor", lightData.diffuseColor);
-	shader->SetVector4("light.specularColor", lightData.specularColor);
+	std::vector<Light*> lights = scene->GetLights();
+	std::vector<LightData> lightsData;
 
-	shader->SetFloat("light.ambientIntensity", lightData.ambientIntensity);
-	shader->SetFloat("light.diffuseIntensity", lightData.diffuseIntensity);
-	shader->SetFloat("light.specularIntensity", lightData.specularIntensity);
+	//std::cout << sizeof(LightData) << std::endl;
 
-	shader->SetFloat("light.constant", lightData.constant);
-	shader->SetFloat("light.linear", lightData.linear);
-	shader->SetFloat("light.quadratic", lightData.quadratic);
+	for (int i = 0; i < lights.size(); i++)
+	{
+		LightData lightData = lights[i]->GetLightData();
+		lightsData.push_back(lightData);
+	}
+
+	shader->SetInt("numLights", lights.size());
+
+	scene->GetLightsBuffer()->SetBufferData(0, lightsData.size() * sizeof(LightData), lightsData.data());
 
 	// ----------------------------------------------------------------------------- //
 
-	shader->SetVector3("m_LightPos", light.GetPosition());
 
 	shader->SetVector3("viewPos", view[3]);
 

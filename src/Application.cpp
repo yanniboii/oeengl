@@ -72,6 +72,9 @@ int main(void)
 		return -1;
 	}
 
+	const char* version = (const char*)glGetString(GL_VERSION);
+	std::cout << "OpenGL Version: " << version << std::endl;
+
 	// Set a clear color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glEnable(GL_DEBUG_OUTPUT);
@@ -96,7 +99,7 @@ int main(void)
 	Renderer renderer;
 	renderer.SetActiveCamera(camera);
 
-	Material* mat = new Material(shaderProgram, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	Material* mat = new Material(shaderProgram, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	RenderObject* ro = new RenderObject(objCube, mat);
 
 	Scene* scene = new Scene();
@@ -105,9 +108,17 @@ int main(void)
 	GameObject* go2 = new GameObject();
 	GameObject* go3 = new GameObject();
 	Light* light = new Light();
+	Light* light2 = new Light();
+	Light* light3 = new Light();
 
 	light->SetPosition(glm::vec3(20, 4, 0));
-	light->SetQuadraticAttenuation(1.0f);
+	light->UpdateLight();
+
+	light2->SetPosition(glm::vec3(0, 10, 0));
+	light2->UpdateLight();
+
+	light3->SetPosition(glm::vec3(0, 0, 10));
+	light3->UpdateLight();
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
 	go3->SetPosition(glm::vec3(15, 2, 2));
@@ -120,6 +131,9 @@ int main(void)
 	go->AddChild(go2);
 	go2->AddChild(go3);
 	scene->AddLight(light);
+	scene->AddLight(light2);
+	scene->AddLight(light3);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{

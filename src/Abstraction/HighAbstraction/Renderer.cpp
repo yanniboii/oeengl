@@ -68,11 +68,13 @@ void Renderer::Draw(Scene* scene, RenderObject& ro, glm::mat4 model, glm::mat4 v
 
 	mat->Render(model, view, projection, scene);
 	Draw(*ro.GetMesh(), *mat->shader);
+
+	scene->GetLightsBuffer()->Unbind();
 }
 
 void Renderer::Clear()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::SetActiveCamera(Camera* camera)

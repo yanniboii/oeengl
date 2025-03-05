@@ -100,6 +100,12 @@ void Shader::Use() const
 	glUseProgram(ID);
 }
 
+void Shader::SetInt(const GLchar* valueName, int value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform1i(valueLoc, value);
+}
+
 void Shader::SetFloat(const GLchar* valueName, float value) {
 	int valueLoc = glGetUniformLocation(ID, valueName);
 	glUniform1f(valueLoc, value);
