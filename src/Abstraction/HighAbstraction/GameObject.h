@@ -26,6 +26,13 @@ public:
 		transform[3][2] = position[2];
 	};
 
+	void Translate(glm::vec3 translation)
+	{
+		transform[3][0] += translation[0];
+		transform[3][1] += translation[1];
+		transform[3][2] += translation[2];
+	}
+
 	glm::vec3 GetPosition() { return transform[3]; };
 
 	glm::mat4 GetTransform() { return transform; };
