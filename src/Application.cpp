@@ -114,7 +114,7 @@ int main(void)
 	light->SetPosition(glm::vec3(20, 4, 0));
 	light->UpdateLight();
 
-	light2->SetPosition(glm::vec3(0, 10, 0));
+	light2->SetPosition(glm::vec3(0, 3, 2));
 	light2->UpdateLight();
 
 	light3->SetPosition(glm::vec3(0, 0, 10));
@@ -134,6 +134,7 @@ int main(void)
 	scene->AddLight(light2);
 	scene->AddLight(light3);
 
+	glEnable(GL_DEPTH_TEST);
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{

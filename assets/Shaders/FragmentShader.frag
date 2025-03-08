@@ -66,11 +66,14 @@ void main()
 vec4 a = vec4(0.0);
 vec4 d = vec4(0.0);
 vec4 s = vec4(0.0);
-vec4 attenuation = vec4(0.0);
+
+vec4 a_temp = vec4(0.0);
+vec4 d_temp = vec4(0.0);
+vec4 s_temp = vec4(0.0);
 
 for(int i = 0; i < numLights; i++){
 
-    a += material.ambientColor * lights[i].ambientColor * material.ambientCoefficient * lights[i].ambientIntensity;
+    a_temp = material.ambientColor * lights[i].ambientColor * material.ambientCoefficient * lights[i].ambientIntensity;
     
     vec3 norm = normalize(vNorm);
     vec3 lightDist = vec3(lights[i].lightPos - FragPos);
@@ -80,7 +83,7 @@ for(int i = 0; i < numLights; i++){
                     material.diffuseCoefficient *
                     max(0,dot(norm,lightDir));
 
-    d += diff * 
+    d_temp = diff * 
         material.diffuseColor * 
         lights[i].diffuseColor;
    
@@ -94,25 +97,32 @@ for(int i = 0; i < numLights; i++){
 
 
 
-    s += spec * 
+    s_temp = spec * 
         lights[i].specularColor * 
         material.specularColor * 
         material.specularCoefficient * 
         lights[i].specularIntensity;
    
 
-    vec4 ds = d + s;
-
-    attenuation =   ds / 
+    float attenuationFactor =   1.0 / 
                     (lights[i].constant + 
                     lights[i].linear * length(lightDist) + 
                     lights[i].quadratic * pow(length(lightDist),2));
+
+        d_temp *= attenuationFactor;
+        s_temp *= attenuationFactor;
+
+        a += a_temp;
+        d += d_temp;
+        s += s_temp;
     }
 
     
 
     vec4 ad = a + d;
-    vec4 ads = a + attenuation;
+    vec4 ds = d + s;
+    vec4 as = a + s;
+    vec4 ads = a + d + s;
 
     FragColor = ads;
 } 

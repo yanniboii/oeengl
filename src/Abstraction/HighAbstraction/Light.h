@@ -12,9 +12,9 @@ struct LightData {
 	float diffuseIntensity = 10.0f;
 	float specularIntensity = 0.2f;
 
-	float constant = 1;
-	float linear = 0.9f;
-	float quadratic = 0.032f;
+	float constant = 3;
+	float linear = 1.2f;
+	float quadratic = 0.05f;
 
 	float innerCutoff = 0.2f;
 	float outerCutoff = 0.5f;

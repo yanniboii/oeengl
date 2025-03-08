@@ -26,7 +26,7 @@ public:
 		transform[3][2] = position[2];
 	};
 
-	void Translate(glm::vec3 translation)
+	void Translate(glm::vec3 translation) //TODO doesn't work
 	{
 		transform[3][0] += translation[0];
 		transform[3][1] += translation[1];
