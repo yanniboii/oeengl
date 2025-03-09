@@ -8,16 +8,22 @@ struct LightData {
 
 	glm::vec3 lightPos = glm::vec3(0, 1, 0);
 
-	float ambientIntensity = 0.5f;
-	float diffuseIntensity = 10.0f;
-	float specularIntensity = 0.2f;
+	float castsShadows = 0;
 
-	float constant = 3;
-	float linear = 1.2f;
+	glm::vec3 lightDirection = glm::vec3(0, -1, 0);
+
+	float shadowType = 0;
+
+	float ambientIntensity = 0.5f;
+	float diffuseIntensity = 5.0f;
+	float specularIntensity = 0.05f;
+
+	float constant = 1;
+	float linear = 0.8f;
 	float quadratic = 0.05f;
 
-	float innerCutoff = 0.2f;
-	float outerCutoff = 0.5f;
+	float innerCutoff = glm::cos(glm::radians(10.5f));
+	float outerCutoff = glm::cos(glm::radians(15.0f));
 
 	float shadowBias = 0.3f;
 	float maximumLightDistance = 20;
@@ -29,9 +35,7 @@ struct LightData {
 	float lightTemperature = 0;
 	float intensityScale = 0;
 
-	float lightType = 0;
-
-	float castsShadows = 0;
+	float lightType = 2;
 };
 
 class Light : public GameObject {

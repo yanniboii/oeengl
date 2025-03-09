@@ -111,7 +111,7 @@ int main(void)
 	Light* light2 = new Light();
 	Light* light3 = new Light();
 
-	light->SetPosition(glm::vec3(20, 4, 0));
+	light->SetPosition(glm::vec3(-0.5f, 5, -0.2f));
 	light->UpdateLight();
 
 	light2->SetPosition(glm::vec3(0, 3, 2));
@@ -131,8 +131,8 @@ int main(void)
 	go->AddChild(go2);
 	go2->AddChild(go3);
 	scene->AddLight(light);
-	scene->AddLight(light2);
-	scene->AddLight(light3);
+	//scene->AddLight(light2);
+	//scene->AddLight(light3);
 
 	glEnable(GL_DEPTH_TEST);
 	/* Loop until the user closes the window */

@@ -8,7 +8,7 @@ Material::Material(Shader* shader) :
 	specularColor(glm::vec4(1, 0, 0, 1)),
 	ambientCoefficient(0.1f),
 	diffuseCoefficient(0.7f),
-	specularShininess(256),
+	specularShininess(1024),
 	specularCoefficient(0.8f)
 {
 
