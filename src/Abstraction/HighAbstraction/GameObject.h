@@ -3,15 +3,13 @@
 #include <vector>
 #include "RenderObject.h"
 
-class RenderObject;
-
 class GameObject {
 public:
-	GameObject() {};
+	GameObject() :transform(glm::mat4(1.0f)) {};
 	GameObject(glm::mat4 transform) :transform(transform) {};
-	~GameObject();
+	~GameObject() {};
 
-	void AddChild(GameObject* child) { children.push_back(child); }
+	virtual void AddChild(GameObject* child) { children.push_back(child); };
 
 	std::vector<RenderObject*> GetRenderObjects() { return renderObjects; };
 
@@ -28,12 +26,22 @@ public:
 		transform[3][2] = position[2];
 	};
 
+	void Translate(glm::vec3 translation) //TODO doesn't work
+	{
+		transform[3][0] += translation[0];
+		transform[3][1] += translation[1];
+		transform[3][2] += translation[2];
+	}
+
+	glm::vec3 GetPosition() { return transform[3]; };
+
 	glm::mat4 GetTransform() { return transform; };
 
-private:
+protected:
 	std::string name;
-	GameObject* parent = nullptr;;
-	glm::mat4 transform;
 	std::vector<GameObject*> children;
+	glm::mat4 transform;
+private:
+	GameObject* parent = nullptr;;
 	std::vector<RenderObject*> renderObjects;
 };

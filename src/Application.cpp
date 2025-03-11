@@ -72,6 +72,9 @@ int main(void)
 		return -1;
 	}
 
+	const char* version = (const char*)glGetString(GL_VERSION);
+	std::cout << "OpenGL Version: " << version << std::endl;
+
 	// Set a clear color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glEnable(GL_DEBUG_OUTPUT);
@@ -89,26 +92,37 @@ int main(void)
 	Shader* shaderProgram = new Shader(SHADERPATH + VERTEXPATH, SHADERPATH + FRAGMENTPATH);
 
 	// ----------------------------------------------------------------------------- //
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	glm::mat4 view;
 	Camera* camera = new Camera(vec3(0.0f, 0.0f, -10.0f), glm::vec3(0, 1, 0));
 
-
 	Renderer renderer;
 	renderer.SetActiveCamera(camera);
-	glm::mat4 model = glm::mat4(1.0f);
 
-	Material* mat = new Material(shaderProgram);
+	Material* mat = new Material(shaderProgram, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	RenderObject* ro = new RenderObject(objCube, mat);
 
 	Scene* scene = new Scene();
 
-	GameObject* go = new GameObject(model);
-	GameObject* go2 = new GameObject(model);
-	GameObject* go3 = new GameObject(model);
+	GameObject* go = new GameObject();
+	GameObject* go2 = new GameObject();
+	GameObject* go3 = new GameObject();
+	Light* light = new Light();
+	Light* light2 = new Light();
+	Light* light3 = new Light();
+
+	light->SetPosition(glm::vec3(15, 9, 2));
+	light->SetLightType(0);
+	light->UpdateLight();
+
+	light2->SetPosition(glm::vec3(1, 10, 2));
+	light2->UpdateLight();
+
+	light3->SetPosition(glm::vec3(0, 0, 10));
+	light3->UpdateLight();
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
-	go3->SetPosition(glm::vec3(5, 2, 2));
+	go3->SetPosition(glm::vec3(15, 2, 2));
 
 	go->AddRenderObject(ro);
 	go2->AddRenderObject(ro);
@@ -117,11 +131,20 @@ int main(void)
 	scene->AddChild(go);
 	go->AddChild(go2);
 	go2->AddChild(go3);
+	scene->AddLight(light);
+	scene->AddLight(light2);
+	scene->AddLight(light3);
 
+	glEnable(GL_DEPTH_TEST);
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
+		float val = (glm::cos(glm::radians(glfwGetTime()) * 70) + 1) / 2.0f;
+		light->SetQuadraticAttenuation(val);
+		light->SetLinearAttenuation(val / 3);
+		std::cout << val << std::endl;
+
 
 		camera->Update(window);
 

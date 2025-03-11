@@ -15,7 +15,7 @@ Camera::~Camera()
 
 void Camera::Move(GLFWwindow* window)
 {
-	const float speed = 0.03f;
+	const float speed = 0.003f;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		m_Position += speed * cameraFront;
 	}
@@ -33,7 +33,7 @@ void Camera::Move(GLFWwindow* window)
 
 void Camera::Rotate(GLFWwindow* window)
 {
-	float speed = 1;
+	float speed = 0.4;
 	double xPos = oldX, yPos = oldY;
 	//glfwGetCursorPos(window, &xPos, &yPos);
 	if (glfwGetKey(window, GLFW_KEY_UP))
