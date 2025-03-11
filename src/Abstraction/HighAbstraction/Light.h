@@ -55,7 +55,9 @@ public:
 
 	void SetConstantAttenuation(float intensity) { lightData.constant = intensity; };
 	void SetLinearAttenuation(float intensity) { lightData.linear = intensity; };
-	//void SetQuadraticAttenuation(float intensity) { lightData.quadratic = intensity; };
+	void SetQuadraticAttenuation(float intensity) { lightData.quadratic = intensity; };
+
+	void SetLightType(float type) { lightData.lightType = type; };
 
 	LightData GetLightData() { return lightData; };
 

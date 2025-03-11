@@ -67,7 +67,7 @@ uniform int numLights;
 
 
 vec4 CalculateAmbient(vec4 l_AmbientColor, float l_AmbientIntensity){
-    return material.ambientColor * l_AmbientColor * material.ambientCoefficient * l_AmbientIntensity;
+    return material.ambientColor * l_AmbientColor * l_AmbientIntensity;
 }
 
 float CalculateDiffuseTerm( vec3 normal,
@@ -267,7 +267,9 @@ void main()
         s += s_temp;
     }
 
-    
+    a /= numLights;
+    a *= material.ambientCoefficient;
+
 
     vec4 ad = a + d;
     vec4 ds = d + s;

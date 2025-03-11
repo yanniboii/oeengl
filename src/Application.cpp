@@ -111,10 +111,11 @@ int main(void)
 	Light* light2 = new Light();
 	Light* light3 = new Light();
 
-	light->SetPosition(glm::vec3(-0.5f, 5, -0.2f));
+	light->SetPosition(glm::vec3(15, 9, 2));
+	light->SetLightType(0);
 	light->UpdateLight();
 
-	light2->SetPosition(glm::vec3(0, 3, 2));
+	light2->SetPosition(glm::vec3(1, 10, 2));
 	light2->UpdateLight();
 
 	light3->SetPosition(glm::vec3(0, 0, 10));
@@ -131,14 +132,19 @@ int main(void)
 	go->AddChild(go2);
 	go2->AddChild(go3);
 	scene->AddLight(light);
-	//scene->AddLight(light2);
-	//scene->AddLight(light3);
+	scene->AddLight(light2);
+	scene->AddLight(light3);
 
 	glEnable(GL_DEPTH_TEST);
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.Clear();
+		float val = (glm::cos(glm::radians(glfwGetTime()) * 70) + 1) / 2.0f;
+		light->SetQuadraticAttenuation(val);
+		light->SetLinearAttenuation(val / 3);
+		std::cout << val << std::endl;
+
 
 		camera->Update(window);
 
