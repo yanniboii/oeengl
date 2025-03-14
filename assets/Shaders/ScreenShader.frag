@@ -13,9 +13,9 @@ uniform sampler2D depthTex;
         1, 2, 1
     );    
     float kernelEdge[9] = float[](
-        -1, -1, -1,
-        -1, 20, -1,
-        -1, -1, -1
+        -5, -5, -5,
+        -5, 42, -5,
+        -5, -5, -5
     );
     float kernelDarkEdge[9] = float[](
         50, 50, 50,
@@ -60,8 +60,8 @@ void main()
     } else {
         FragColor = vec4(col.xyz, 1.0); // Darken based on depth
     }
-    //FragColor = col;
-    //FragColor = vec4(1.0f - vec3(texture(tex,texCoords)),1.0f);
+    FragColor = col;
+    //FragColor = vec4(1.0f - vec3(texture(colorTex,texCoords)),1.0f);
 }
 
 // INVERSE
