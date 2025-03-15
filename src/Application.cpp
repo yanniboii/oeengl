@@ -46,6 +46,34 @@ void GLAPIENTRY messageCallback(GLenum source, GLenum type, GLuint id, GLenum se
 
 }
 
+float GetFPS()
+{
+	static double lastTime = glfwGetTime();
+
+	static int frameCount = 0;
+
+	double currentTime = glfwGetTime();
+	frameCount++;
+
+	static float fps = 0;
+	if (currentTime - lastTime >= 1) {
+		fps = frameCount / (currentTime - lastTime);
+		frameCount = 0;
+		lastTime = currentTime;
+	}
+
+	return fps;
+}
+
+void UpdateWindowTitle(GLFWwindow* window, int fps) {
+	static int lastFPS = 0;
+	if (fps != lastFPS) {
+		std::string title = "OpenGL Program - FPS: " + std::to_string(fps);
+		glfwSetWindowTitle(window, title.c_str());
+	}
+	lastFPS = fps;
+}
+
 int main(void)
 {
 
@@ -76,7 +104,7 @@ int main(void)
 	std::cout << "OpenGL Version: " << version << std::endl;
 
 	// Set a clear color
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(messageCallback, 0);
@@ -216,6 +244,7 @@ int main(void)
 		renderer.Draw(*va, *ib, screenShader);
 		tb.Unbind();
 
+		UpdateWindowTitle(window, GetFPS());
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
