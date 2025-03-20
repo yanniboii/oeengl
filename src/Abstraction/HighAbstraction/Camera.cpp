@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include "../Misc/Utils.h"
 #include <iostream>
 
 Camera::Camera(vec3 position, fvec3 worldUp)
@@ -15,7 +15,7 @@ Camera::~Camera()
 
 void Camera::Move(GLFWwindow* window)
 {
-	const float speed = 0.003f;
+	const float speed = 20.0f * GetDeltaTime();
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		m_Position += speed * cameraFront;
 	}
@@ -33,7 +33,7 @@ void Camera::Move(GLFWwindow* window)
 
 void Camera::Rotate(GLFWwindow* window)
 {
-	float speed = 0.4;
+	float speed = 0.2f;// *GetDeltaTime();
 	double xPos = oldX, yPos = oldY;
 	//glfwGetCursorPos(window, &xPos, &yPos);
 	if (glfwGetKey(window, GLFW_KEY_UP))
@@ -49,10 +49,6 @@ void Camera::Rotate(GLFWwindow* window)
 	double yOffset = oldY - yPos;
 	oldX = xPos;
 	oldY = yPos;
-
-	const float sensitivity = 0.1f;
-	xOffset *= sensitivity;
-	yOffset *= sensitivity;
 
 	yaw += xOffset;
 	pitch += yOffset;

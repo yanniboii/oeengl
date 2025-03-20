@@ -1,5 +1,5 @@
 #version 330 core
-const float offset = 1.0 / 600.0;  
+const float offset = 1.0 / 200.0;  
 
 out vec4 FragColor;
 
@@ -50,18 +50,19 @@ void main()
         sampleTexColors[i] = vec3(texture(colorTex,texCoords.st + offsets[i]));
     };
 
-    vec4 col;
+    vec4 col = vec4(0.0);
+
+    float kernelSum = 9.0;
 
     for(int i = 0; i < 9; i++){
-        col += vec4(vec3(sampleTexColors[i]*kernelEdge[i]),1.0f);
+        col += vec4(vec3(sampleTexColors[i]*kernel[i]),1.0f);
     };
-    if (depth >= 1.0) {
-        FragColor = vec4(sampleTexColors[4].xyz, 1.0); // No effect on background
-    } else {
-        FragColor = vec4(col.xyz, 1.0); // Darken based on depth
-    }
-    FragColor = col;
-    //FragColor = vec4(1.0f - vec3(texture(colorTex,texCoords)),1.0f);
+
+    vec3 colNorm = col.xyz / kernelSum;
+    FragColor = vec4(mix(colNorm, sampleTexColors[4].xyz, depth),1);;
+
+    //FragColor = col / kernelSum;
+    //FragColor = vec4(0.0f + vec3(texture(colorTex,texCoords)),1.0f);
 }
 
 // INVERSE

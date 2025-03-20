@@ -60,12 +60,19 @@
     <ClCompile Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Misc\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Shaders\VertexShader.vert" />
     <None Include="assets\Shaders\FragmentShader.frag" />
     <None Include="assets\Shaders\ScreenShader.vert" />
     <None Include="assets\Shaders\ScreenShader.frag" />
+    <None Include="assets\Shaders\HorizontalSS.frag" />
+    <None Include="assets\Shaders\HorizontalSS.vert" />
+    <None Include="assets\Shaders\VerticalSS.frag" />
+    <None Include="assets\Shaders\VerticalSS.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -123,6 +130,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Misc\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

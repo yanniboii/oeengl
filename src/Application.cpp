@@ -6,15 +6,10 @@
 #include <sstream>
 #include <string>
 #include "Application.h"
-#include "Abstraction/LowAbstraction/FrameBuffer.h"
-#include "Abstraction/LowAbstraction/RenderBuffer.h"
-#include "Abstraction/LowAbstraction/TextureBuffer.h"
 #include "Abstraction/HighAbstraction/Renderer.h"
 #include <algorithm>
 #include "ModelLoading/ObjFileReader.h"
 
-const std::string ASSETSPATH = "C:/Dev/oeengl/assets/";
-const std::string SHADERPATH = "C:/Dev/oeengl/assets/Shaders/";
 const std::string VERTEXPATH = "VertexShader.vert";
 const std::string FRAGMENTPATH = "FragmentShader.frag";
 const std::string OBJPATH = "Models/teapot.obj";
@@ -115,63 +110,12 @@ int main(void)
 	ObjFileReader fReader;
 	Mesh* objCube = fReader.Read((ASSETSPATH + OBJPATH), false);
 
-
-	float vertices[] = {
-		// Positions
-		-1.0f, -1.0f, 0.0f, 0.0f, // Bottom-left
-		 1.0f, -1.0f, 1.0f, 0.0f, // Bottom-right
-		 1.0f,  1.0f, 1.0f, 1.0f, // Top-right
-		-1.0f,  1.0f, 0.0f, 1.0f  // Top-left
-	};
-	GLuint indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	int size = sizeof(vertices);
-	std::vector<Vertex> verts;
-	for (int i = 0; i < size; i++) {
-		Vertex vertex;
-		vertex.postion = fvec3(
-			vertices[i],
-			vertices[i + 1],
-			vertices[i + 2]);
-		//std::cout << vertex.postion.x << vertex.postion.y << vertex.postion.z << std::endl;
-		verts.push_back(vertex);
-	}
-
-	VertexBuffer* vb = new VertexBuffer(sizeof(vertices) * 4, &vertices[0]);
-
-	VertexBufferLayout layout;
-	layout.Push<float>(2);
-	layout.Push<float>(2);
-	VertexArray* va = new VertexArray;
-	va->AddBuffer(*vb, layout);
-	IndexBuffer* ib = new IndexBuffer;
-	ib = new IndexBuffer(&indices[0], sizeof(indices));
-
-
-	Mesh* cube = new Mesh(va, ib);
-
-	FrameBuffer fb(GL_FRAMEBUFFER);
-
-	TextureBuffer tb(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
-	tb.Unbind();
-	tb.AttachToFrameBuffer(GL_FRAMEBUFFER);
-
-	RenderBuffer rb(RESOLUTION.x, RESOLUTION.y);
-	rb.Unbind();
-	rb.AttachToFrameBuffer(GL_FRAMEBUFFER);
-	// attach it to currently bound framebuffer object
-	fb.CheckStatus();
 	// ----------------------------------------------------------------------------- //
 
 	Shader* shaderProgram = new Shader(SHADERPATH + VERTEXPATH, SHADERPATH + FRAGMENTPATH);
 
-	Shader screenShader = Shader(SHADERPATH + "ScreenShader.vert", SHADERPATH + "ScreenShader.frag");
 	// ----------------------------------------------------------------------------- //
 
-	glm::mat4 view;
 	Camera* camera = new Camera(vec3(0.0f, 0.0f, -10.0f), glm::vec3(0, 1, 0));
 
 	Renderer renderer;
@@ -213,7 +157,10 @@ int main(void)
 	scene->AddLight(light2);
 	scene->AddLight(light3);
 
+	renderer.InitializePostProcessing(PingPong);
+
 	glEnable(GL_DEPTH_TEST);
+	renderer.pingPongAmount = 2;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -222,27 +169,9 @@ int main(void)
 		light->SetQuadraticAttenuation(val);
 		light->SetLinearAttenuation(val / 3);
 
-
 		camera->Update(window);
 
-		rb.Bind();
-		fb.Bind();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
-		glEnable(GL_DEPTH_TEST);
-
 		renderer.Draw(scene);
-
-		fb.Unbind();
-		rb.Unbind();
-		glDisable(GL_DEPTH_TEST);
-
-		//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
-		tb.Bind();
-
-		//screenShader.Use();
-		renderer.Draw(*va, *ib, screenShader);
-		tb.Unbind();
 
 		UpdateWindowTitle(window, GetFPS());
 
