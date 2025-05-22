@@ -138,9 +138,12 @@ int main(void)
 	light->UpdateLight();
 
 	light2->SetPosition(glm::vec3(1, 10, 2));
+	//light2->SetDiffuseIntensity(20);
+	//light2->SetSpecularIntensity(20);
 	light2->UpdateLight();
 
-	light3->SetPosition(glm::vec3(0, 0, 10));
+	light3->SetPosition(glm::vec3(1000, 1, 1));
+	light3->SetLightType(1);
 	light3->UpdateLight();
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
@@ -155,12 +158,11 @@ int main(void)
 	go2->AddChild(go3);
 	scene->AddLight(light);
 	scene->AddLight(light2);
-	scene->AddLight(light3);
+	//scene->AddLight(light3);
 
-	renderer.InitializePostProcessing(PingPong);
+	renderer.InitializePostProcessing();
 
 	glEnable(GL_DEPTH_TEST);
-	renderer.pingPongAmount = 2;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{

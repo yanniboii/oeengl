@@ -63,6 +63,21 @@
     <ClCompile Include="src\Misc\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Abstraction\HighAbstraction\PostProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Abstraction\HighAbstraction\PostProcessingFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Scripts\PostProcessing\GausianBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Misc\PostProcessingDefaults.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="assets\Scripts\PostProcessing\HDRPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Shaders\VertexShader.vert" />
@@ -73,6 +88,8 @@
     <None Include="assets\Shaders\HorizontalSS.vert" />
     <None Include="assets\Shaders\VerticalSS.frag" />
     <None Include="assets\Shaders\VerticalSS.vert" />
+    <None Include="assets\Shaders\HDR.vert" />
+    <None Include="assets\Shaders\HDR.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -133,6 +150,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Misc\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Abstraction\HighAbstraction\PostProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Abstraction\HighAbstraction\PostProcessingFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assets\Scripts\PostProcessing\HDRPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assets\Scripts\PostProcessing\GausianBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Misc\PostProcessingDefaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

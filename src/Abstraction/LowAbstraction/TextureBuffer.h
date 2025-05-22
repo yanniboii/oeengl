@@ -3,10 +3,14 @@
 
 class TextureBuffer {
 public:
-	TextureBuffer(GLenum target,GLsizei width, GLsizei height);
+	TextureBuffer(
+		GLenum target,
+		GLsizei width,
+		GLsizei height,
+		bool depth = false);
 	~TextureBuffer();
 
-	void AttachToFrameBuffer(GLenum target);
+	void AttachToFrameBuffer(GLenum target, GLenum attachment = GL_COLOR_ATTACHMENT0);
 
 	void Bind() const;
 	void Unbind() const;

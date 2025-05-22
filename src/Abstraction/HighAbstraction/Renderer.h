@@ -6,30 +6,28 @@
 #include "../LowAbstraction/FrameBuffer.h"
 #include "../LowAbstraction/RenderBuffer.h"
 #include "../LowAbstraction/TextureBuffer.h"
-
-enum PostProcessing {
-	None = 0,
-	Normal = 1,
-	PingPong = 2
-};
+#include "../HighAbstraction/PostProcessingFactory.h"
+#include "../Application.h"
 
 class Renderer {
 public:
+	void PingPongPass() const;
+
 	void Draw(const VertexArray& va, const IndexBuffer& ib, const  Shader& shader) const;
 	void Draw(Scene* scene) const;
 	void Draw(Scene* scene, GameObject* go, bool recursive = false) const;
 	void Draw(Scene* scene, RenderObject& ro, glm::mat4 model, glm::mat4 view, glm::mat4 projection) const;
 	void Draw(Mesh& mesh, const Shader& shader) const;
 
-	void InitializePostProcessing(const PostProcessing postProcessing = None);
+
+	void InitializePostProcessing();
 
 	void Clear();
 
 	void SetActiveCamera(Camera* camera);
-
-	int pingPongAmount = 0;
 private:
 	Camera* camera;
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)RESOLUTION.x / RESOLUTION.y, 0.1f, 100.0f);
 
 	VertexArray* postProcessingVA;
 	IndexBuffer* postProcessingIB;
@@ -38,13 +36,18 @@ private:
 
 	FrameBuffer* frameBuffer_A;
 	TextureBuffer* textureBuffer_A;
+	TextureBuffer* depthTexture_A;
 
 	FrameBuffer* frameBuffer_B;
 	TextureBuffer* textureBuffer_B;
+	TextureBuffer* depthTexture_B;
+
+	FrameBuffer* baseFBO;
+	TextureBuffer* baseTexture;
 
 	Shader* screenShader;
 	Shader* screenShaderHor;
 	Shader* screenShaderVert;
 
-	PostProcessing postProcessing = None;
+	std::vector<PostProcessing*> postProccessing;
 };

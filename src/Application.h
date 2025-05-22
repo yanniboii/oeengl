@@ -9,5 +9,3 @@ float GetFPS();
 void UpdateWindowTitle(GLFWwindow* window, int fps);
 
 const static glm::ivec2 RESOLUTION = glm::ivec2(1920 / 2, 1080 / 2);
-const std::string ASSETSPATH = "C:/Dev/oeengl/assets/";
-const std::string SHADERPATH = "C:/Dev/oeengl/assets/Shaders/";

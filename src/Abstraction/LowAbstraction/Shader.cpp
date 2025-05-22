@@ -100,6 +100,12 @@ void Shader::Use() const
 	glUseProgram(ID);
 }
 
+void Shader::SetBool(const GLchar* valueName, bool value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform1i(valueLoc, value);
+}
+
 void Shader::SetInt(const GLchar* valueName, int value)
 {
 	int valueLoc = glGetUniformLocation(ID, valueName);
@@ -109,6 +115,12 @@ void Shader::SetInt(const GLchar* valueName, int value)
 void Shader::SetFloat(const GLchar* valueName, float value) {
 	int valueLoc = glGetUniformLocation(ID, valueName);
 	glUniform1f(valueLoc, value);
+}
+
+void Shader::SetVector2(const GLchar* valueName, glm::vec2 value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform2fv(valueLoc, 1, glm::value_ptr(value));
 }
 
 void Shader::SetVector3(const GLchar* valueName, glm::vec3 value)
@@ -121,6 +133,18 @@ void Shader::SetVector4(const GLchar* valueName, glm::vec4 value)
 {
 	int valueLoc = glGetUniformLocation(ID, valueName);
 	glUniform4fv(valueLoc, 1, glm::value_ptr(value));
+}
+
+void Shader::SetFloatArray(const GLchar* valueName, std::vector<float> value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform1fv(valueLoc, value.size(), value.data());
+}
+
+void Shader::SetVector2Array(const GLchar* valueName, std::vector<glm::vec2> value)
+{
+	int valueLoc = glGetUniformLocation(ID, valueName);
+	glUniform2fv(valueLoc, value.size(), glm::value_ptr(value[0]));
 }
 
 void Shader::SetMatrix4(const GLchar* valueName, glm::mat4 value)

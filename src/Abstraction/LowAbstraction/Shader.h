@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
-
+#include <vector>	
 class Shader {
 public:
 	GLuint ID;
@@ -23,6 +23,11 @@ public:
 	void SetVector2(const GLchar* valueName, glm::vec2 value);
 	void SetVector3(const GLchar* valueName, glm::vec3 value);
 	void SetVector4(const GLchar* valueName, glm::vec4 value);
+
+	void SetFloatArray(const GLchar* valueName, std::vector<float> value);
+	void SetVector2Array(const GLchar* valueName, std::vector <glm::vec2> value);
+	void SetVector3Array(const GLchar* valueName, std::vector <glm::vec3> value);
+	void SetVector4Array(const GLchar* valueName, std::vector <glm::vec4> value);
 
 	void SetMatrix2(const GLchar* valueName, glm::mat2 value);
 	void SetMatrix2x3(const GLchar* valueName, glm::mat2x3 value);

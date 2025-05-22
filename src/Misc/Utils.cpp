@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include "Utils.h"
 
 float GetDeltaTime()
 {
@@ -15,4 +16,11 @@ float GetDeltaTime()
 	}
 
 	return deltaTime;
+}
+
+void CheckOutOfRangeVector(size_t vectorSize, unsigned int index)
+{
+	if (index > static_cast<int>(vectorSize)) {
+		throw std::out_of_range("Invalid position");
+	}
 }

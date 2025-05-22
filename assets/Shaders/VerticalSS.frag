@@ -1,5 +1,5 @@
 #version 330 core
-const float offset = 1.0 / (1080.0 / 1.0);  
+const float offset = 1.0 / (1080.0 / 10.0);  
 
 out vec4 FragColor;
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="assets\Scripts\PostProcessing\GausianBlurPass.cpp" />
+    <ClCompile Include="assets\Scripts\PostProcessing\HDRPass.cpp" />
     <ClCompile Include="RenderDoc\RenderDocInitializer.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\PostProcessing.cpp" />
+    <ClCompile Include="src\Abstraction\HighAbstraction\PostProcessingFactory.cpp" />
     <ClCompile Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Abstraction\HighAbstraction\Camera.cpp" />
@@ -27,6 +31,7 @@
     <ClCompile Include="src\Abstraction\HighAbstraction\GameObject.cpp" />
     <ClCompile Include="src\Abstraction\LowAbstraction\IndexBuffer.cpp" />
     <ClCompile Include="src\Abstraction\HighAbstraction\Material.cpp" />
+    <ClCompile Include="src\Misc\PostProcessingDefaults.cpp" />
     <ClCompile Include="src\Misc\Utils.cpp" />
     <ClCompile Include="src\ModelLoading\ObjFileReader.cpp" />
     <ClCompile Include="src\Abstraction\LowAbstraction\RenderBuffer.cpp" />
@@ -38,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Shaders\FragmentShader.frag" />
+    <None Include="assets\Shaders\HDR.frag" />
+    <None Include="assets\Shaders\HDR.vert" />
     <None Include="assets\Shaders\HorizontalSS.frag" />
     <None Include="assets\Shaders\HorizontalSS.vert" />
     <None Include="assets\Shaders\ScreenShader.frag" />
@@ -47,7 +54,11 @@
     <None Include="assets\Shaders\VerticalSS.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assets\Scripts\PostProcessing\GausianBlurPass.h" />
+    <ClInclude Include="assets\Scripts\PostProcessing\HDRPass.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Light.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\PostProcessing.h" />
+    <ClInclude Include="src\Abstraction\HighAbstraction\PostProcessingFactory.h" />
     <ClInclude Include="src\Abstraction\LowAbstraction\ShaderStorageBufferObject.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Camera.h" />
@@ -56,6 +67,7 @@
     <ClInclude Include="src\Abstraction\LowAbstraction\IndexBuffer.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Material.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Mesh.h" />
+    <ClInclude Include="src\Misc\PostProcessingDefaults.h" />
     <ClInclude Include="src\Misc\Utils.h" />
     <ClInclude Include="src\ModelLoading\ObjFileReader.h" />
     <ClInclude Include="src\Abstraction\LowAbstraction\RenderBuffer.h" />

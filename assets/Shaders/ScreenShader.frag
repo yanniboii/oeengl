@@ -1,4 +1,5 @@
 #version 330 core
+
 const float offset = 1.0 / 200.0;  
 
 out vec4 FragColor;
@@ -7,7 +8,8 @@ in vec2 texCoords;
 
 uniform sampler2D colorTex;
 uniform sampler2D depthTex;
-    float kernel[9] = float[](
+
+    float _kernel[9] = float[](
         1, 2, 1,
         2, 4, 2,
         1, 2, 1
