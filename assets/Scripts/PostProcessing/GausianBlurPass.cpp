@@ -32,16 +32,14 @@ void GaussianBlurPass::BeforeRender(const PostProcessingParams params)
 	shader->SetVector2Array("kernelOffsets", kernelOffsets);
 	shader->SetInt("kernelSize", kernel.size());
 
-	glActiveTexture(GL_TEXTURE1);
-	params.baseTexture->Bind();
+	params.baseTexture->Bind(GL_TEXTURE1);
 	shader->SetInt("baseTex", 1);
 
-	glActiveTexture(GL_TEXTURE0);
-	params.previousTexture->Bind();
+	params.previousTexture_1->Bind(GL_TEXTURE0);
 	shader->SetInt("colorTex", 0);
 }
 
 void GaussianBlurPass::AfterRender(const PostProcessingParams params)
 {
-	params.previousTexture->Unbind();
+	params.previousTexture_0->Unbind();
 }

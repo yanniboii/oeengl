@@ -36,18 +36,20 @@ private:
 
 	FrameBuffer* frameBuffer_A;
 	TextureBuffer* textureBuffer_A;
-	TextureBuffer* depthTexture_A;
 
 	FrameBuffer* frameBuffer_B;
 	TextureBuffer* textureBuffer_B;
-	TextureBuffer* depthTexture_B;
 
 	FrameBuffer* baseFBO;
 	TextureBuffer* baseTexture;
 
+	TextureBuffer* attachment1;
+	TextureBuffer* depthTexture;
+
 	Shader* screenShader;
 	Shader* screenShaderHor;
 	Shader* screenShaderVert;
+	Shader* combineShader;
 
 	std::vector<PostProcessing*> postProccessing;
 };

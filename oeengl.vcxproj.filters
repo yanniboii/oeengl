@@ -78,6 +78,9 @@
     <ClCompile Include="assets\Scripts\PostProcessing\HDRPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="assets\Scripts\PostProcessing\CombinePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Shaders\VertexShader.vert" />
@@ -90,6 +93,8 @@
     <None Include="assets\Shaders\VerticalSS.vert" />
     <None Include="assets\Shaders\HDR.vert" />
     <None Include="assets\Shaders\HDR.frag" />
+    <None Include="assets\Shaders\PostProcessing\CombineShader.frag" />
+    <None Include="assets\Shaders\PostProcessing\CombineShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -165,6 +170,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Misc\PostProcessingDefaults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assets\Scripts\PostProcessing\CombinePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

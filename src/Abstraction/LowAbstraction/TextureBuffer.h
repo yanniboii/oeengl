@@ -13,6 +13,7 @@ public:
 	void AttachToFrameBuffer(GLenum target, GLenum attachment = GL_COLOR_ATTACHMENT0);
 
 	void Bind() const;
+	void Bind(GLenum attachment) const;
 	void Unbind() const;
 private:
 	GLuint m_RendererID;

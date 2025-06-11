@@ -13,6 +13,7 @@
 const std::string VERTEXPATH = "VertexShader.vert";
 const std::string FRAGMENTPATH = "FragmentShader.frag";
 const std::string OBJPATH = "Models/teapot.obj";
+const std::string OBJPATH2 = "Models/plane.obj";
 // C: / Dev / oeengl / assets / Shaders / VertexShader.vert
 
 void PrintMatrix(glm::mat4& view)
@@ -109,6 +110,7 @@ int main(void)
 
 	ObjFileReader fReader;
 	Mesh* objCube = fReader.Read((ASSETSPATH + OBJPATH), false);
+	Mesh* plane = fReader.Read((ASSETSPATH + OBJPATH2), false);
 
 	// ----------------------------------------------------------------------------- //
 
@@ -122,7 +124,9 @@ int main(void)
 	renderer.SetActiveCamera(camera);
 
 	Material* mat = new Material(shaderProgram, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	Material* mat2 = new Material(shaderProgram, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	RenderObject* ro = new RenderObject(objCube, mat);
+	RenderObject* planeRO = new RenderObject(plane, mat2);
 
 	Scene* scene = new Scene();
 
@@ -147,11 +151,11 @@ int main(void)
 	light3->UpdateLight();
 
 	go2->SetPosition(glm::vec3(2, 2, 2));
-	go3->SetPosition(glm::vec3(15, 2, 2));
+	go3->SetPosition(glm::vec3(15, -2, 2));
 
 	go->AddRenderObject(ro);
 	go2->AddRenderObject(ro);
-	go3->AddRenderObject(ro);
+	go3->AddRenderObject(planeRO);
 
 	scene->AddChild(go);
 	go->AddChild(go2);
@@ -168,8 +172,8 @@ int main(void)
 	{
 		renderer.Clear();
 		float val = (glm::cos(glm::radians(glfwGetTime()) * 70) + 1) / 2.0f;
-		light->SetQuadraticAttenuation(val);
-		light->SetLinearAttenuation(val / 3);
+		light->SetQuadraticAttenuation(0.2f);
+		light->SetLinearAttenuation(val * 200);
 
 		camera->Update(window);
 

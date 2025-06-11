@@ -63,6 +63,12 @@ void TextureBuffer::Bind() const
 	glBindTexture(target, m_RendererID);
 }
 
+void TextureBuffer::Bind(GLenum attachment) const
+{
+	glActiveTexture(attachment);
+	glBindTexture(target, m_RendererID);
+}
+
 void TextureBuffer::Unbind() const
 {
 	glBindTexture(target, 0);

@@ -1,8 +1,6 @@
 #version 330 core
 #define MAX_KERNEL_SIZE 32
 
-const float offset = 1.0 / (1920.0 / 10.0);  
-
 out vec4 FragColor;
 
 in vec2 texCoords;
@@ -25,17 +23,10 @@ uniform int kernelSize;
     float kernelBox[3] = float[](
         1, 1, 1
     );
-
-    uniform bool firstPass;
+uniform bool firstPass;
 
 void main()
 {
-    vec2 offsets[3] = vec2[](
-        vec2(-offset,  0.0f),   // center-left
-        vec2( 0.0f,    0.0f),   // center-center
-        vec2( offset,  0.0f)    // center-right
-    );
-
     float depth = texture(depthTex, texCoords).r;
 
     vec3 sampleTexColors[MAX_KERNEL_SIZE];

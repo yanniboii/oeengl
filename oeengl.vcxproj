@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="assets\Scripts\PostProcessing\CombinePass.cpp" />
     <ClCompile Include="assets\Scripts\PostProcessing\GausianBlurPass.cpp" />
     <ClCompile Include="assets\Scripts\PostProcessing\HDRPass.cpp" />
     <ClCompile Include="RenderDoc\RenderDocInitializer.cpp" />
@@ -47,6 +48,8 @@
     <None Include="assets\Shaders\HDR.vert" />
     <None Include="assets\Shaders\HorizontalSS.frag" />
     <None Include="assets\Shaders\HorizontalSS.vert" />
+    <None Include="assets\Shaders\PostProcessing\CombineShader.frag" />
+    <None Include="assets\Shaders\PostProcessing\CombineShader.vert" />
     <None Include="assets\Shaders\ScreenShader.frag" />
     <None Include="assets\Shaders\ScreenShader.vert" />
     <None Include="assets\Shaders\VertexShader.vert" />
@@ -54,6 +57,7 @@
     <None Include="assets\Shaders\VerticalSS.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assets\Scripts\PostProcessing\CombinePass.h" />
     <ClInclude Include="assets\Scripts\PostProcessing\GausianBlurPass.h" />
     <ClInclude Include="assets\Scripts\PostProcessing\HDRPass.h" />
     <ClInclude Include="src\Abstraction\HighAbstraction\Light.h" />

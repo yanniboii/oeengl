@@ -62,14 +62,13 @@ void Renderer::PingPongPass() const
 	std::vector<std::shared_ptr<PostProcessing>> postProcessingQueue = instance.GetPostProcessingQueue();
 
 	glDisable(GL_DEPTH_TEST);
-	renderBuffer->Bind();
 	for (int i = 0; i < postProcessingQueue.size(); i++) {
 
 		auto currentEffect = postProcessingQueue[i];
 
 		PostProcessingParams params;
 		params.baseTexture = baseTexture;
-
+		params.depthTexture = depthTexture;
 
 		if (i == 0)
 			params.firstPass = true;
@@ -83,23 +82,22 @@ void Renderer::PingPongPass() const
 			params.lastPass = false;
 
 		if (i % 2 == 0) {
-			params.previousTexture = textureBuffer_A;
+			params.previousTexture_0 = textureBuffer_A;
+			params.previousTexture_1 = attachment1;
 			params.nextFrameBuffer = frameBuffer_B;
 			usedTexture = textureBuffer_A;
-
 
 			frameBuffer_A->Unbind();
 		}
 		else
 		{
-			params.previousTexture = textureBuffer_B;
+			params.previousTexture_0 = textureBuffer_B;
+			params.previousTexture_1 = attachment1;
 			params.nextFrameBuffer = frameBuffer_A;
 			usedTexture = textureBuffer_B;
 
-
 			frameBuffer_B->Unbind();
 		}
-
 		currentEffect->BeforeRender(params);
 		Draw(*postProcessingVA, *postProcessingIB, *currentEffect->GetShader());
 		currentEffect->AfterRender(params);
@@ -145,14 +143,14 @@ void Renderer::InitializePostProcessing()
 	renderBuffer->Unbind();
 	renderBuffer->AttachToFrameBuffer(GL_FRAMEBUFFER);
 
-	depthTexture_A = new TextureBuffer(
+	depthTexture = new TextureBuffer(
 		GL_TEXTURE_2D,
 		RESOLUTION.x,
 		RESOLUTION.y,
 		true);
 
-	depthTexture_A->Unbind();
-	depthTexture_A->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
+	depthTexture->Unbind();
+	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
 
 	baseFBO->CheckStatus();
 
@@ -164,6 +162,12 @@ void Renderer::InitializePostProcessing()
 	textureBuffer_A->Unbind();
 	textureBuffer_A->AttachToFrameBuffer(GL_FRAMEBUFFER);
 
+	attachment1 = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	attachment1->Unbind();
+	attachment1->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1);
+
+	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
+
 	frameBuffer_A->CheckStatus();
 
 	// ----------------------------------------------------------------------------- //
@@ -174,14 +178,10 @@ void Renderer::InitializePostProcessing()
 	textureBuffer_B->Unbind();
 	textureBuffer_B->AttachToFrameBuffer(GL_FRAMEBUFFER);
 
-	depthTexture_B = new TextureBuffer(
-		GL_TEXTURE_2D,
-		RESOLUTION.x,
-		RESOLUTION.y,
-		true);
 
-	depthTexture_B->Unbind();
-	depthTexture_B->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
+	attachment1->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1);
+
+	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
 
 	frameBuffer_B->CheckStatus();
 
@@ -190,15 +190,17 @@ void Renderer::InitializePostProcessing()
 	screenShader = new Shader(SHADERPATH + "HDR.vert", SHADERPATH + "HDR.frag");
 	screenShaderHor = new Shader(SHADERPATH + "HorizontalSS.vert", SHADERPATH + "HorizontalSS.frag");
 	screenShaderVert = new Shader(SHADERPATH + "VerticalSS.vert", SHADERPATH + "VerticalSS.frag");
-
+	combineShader = new Shader(SHADERPATH + "PostProcessing/CombineShader.vert", SHADERPATH + "PostProcessing/CombineShader.frag");
 	// ----------------------------------------------------------------------------- //
 
-	std::vector<float> gausianKernelHor = { 2.0f, 4.0f, 2.0f };
+	std::vector<float> gausianKernelHor = { 0.06136f, 0.24477f, 0.38774f, 0.24477f, 0.06136f };
 
 	std::vector<glm::vec2> gausianKernelOffsetsHor = {
-		glm::vec2((1.0f / RESOLUTION.x), 0.0f),
+		glm::vec2((2.0f / (RESOLUTION.x / 4)), 0.0f),
+		glm::vec2((1.0f / (RESOLUTION.x / 4)), 0.0f),
 		glm::vec2(0.0f,  0.0f),
-		glm::vec2(-(1.0f / RESOLUTION.x), 0.0f)
+		glm::vec2(-(1.0f / (RESOLUTION.x / 4)), 0.0f),
+		glm::vec2(-(2.0f / (RESOLUTION.x / 4)), 0.0f)
 	};
 
 	auto gausianHor = PostProcessingFactory::GetKnownEffect("GaussianBlurPassHorizontal");
@@ -211,12 +213,14 @@ void Renderer::InitializePostProcessing()
 
 	instance.AddToQueue(gausianHor);
 
-	std::vector<float> gausianKernelVert = { 2.0f, 4.0f, 2.0f };
+	std::vector<float> gausianKernelVert = { 0.06136f, 0.24477f, 0.38774f, 0.24477f, 0.06136f };
 
 	std::vector<glm::vec2> gausianKernelOffsetsVert = {
-		glm::vec2(0.0f,  (1.0f / RESOLUTION.y)),
+		glm::vec2(0.0f,  (2.0f / (RESOLUTION.y / 4))),
+		glm::vec2(0.0f,  (1.0f / (RESOLUTION.y / 4))),
 		glm::vec2(0.0f,  0.0f),
-		glm::vec2(0.0f, -(1.0f / RESOLUTION.y))
+		glm::vec2(0.0f, -(1.0f / (RESOLUTION.y / 4))),
+		glm::vec2(0.0f, -(2.0f / (RESOLUTION.y / 4)))
 	};
 
 
@@ -227,10 +231,14 @@ void Renderer::InitializePostProcessing()
 	gausianVert->UpdateKernelOffsets(gausianKernelOffsetsVert);
 
 	auto HDR = PostProcessingFactory::GetKnownEffect("HDRPass");
+	auto combine = PostProcessingFactory::GetKnownEffect("CombinePass");
 
+	combine->UpdateShader(combineShader);
 	HDR->UpdateShader(screenShader);
+
 	instance.AddToQueue(HDR, 0);
-	instance.AddPingPongToQueue(gausianHor, gausianVert, 20, 1);
+	instance.AddPingPongToQueue(gausianHor, gausianVert, 5, 1);
+	instance.AddToQueue(combine);
 }
 
 void Renderer::Draw(Scene* scene, GameObject* go, bool recursive) const

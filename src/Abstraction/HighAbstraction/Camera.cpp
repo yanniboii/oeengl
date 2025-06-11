@@ -33,7 +33,8 @@ void Camera::Move(GLFWwindow* window)
 
 void Camera::Rotate(GLFWwindow* window)
 {
-	float speed = 0.2f;// *GetDeltaTime();
+	//float speed = 900000.0f * GetDeltaTime();
+	float speed = 0.2f;
 	double xPos = oldX, yPos = oldY;
 	//glfwGetCursorPos(window, &xPos, &yPos);
 	if (glfwGetKey(window, GLFW_KEY_UP))

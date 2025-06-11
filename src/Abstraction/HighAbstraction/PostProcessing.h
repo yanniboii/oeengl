@@ -8,8 +8,11 @@
 #include "../Misc/PostProcessingDefaults.h"
 
 struct PostProcessingParams {
-	TextureBuffer* previousTexture;
+	TextureBuffer* previousTexture_0;
+	TextureBuffer* previousTexture_1;
 	TextureBuffer* baseTexture;
+	TextureBuffer* depthTexture;
+
 	FrameBuffer* nextFrameBuffer;
 
 	bool firstPass;
