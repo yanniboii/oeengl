@@ -8,7 +8,7 @@ uniform sampler2D depthTexture;
 in vec2 texCoords;
 uniform float exposure;
 
-float threshold = 0.1f;
+float threshold = 0.35f;
 
 void main()
 {

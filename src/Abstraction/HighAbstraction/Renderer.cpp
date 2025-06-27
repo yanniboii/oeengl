@@ -55,6 +55,18 @@ void Renderer::Draw(Mesh& mesh, const Shader& shader) const
 	Draw(mesh.GetVertexArray(), mesh.GetIndexBuffer(), shader);
 }
 
+void Renderer::PrintData(PostProcessingParams params, FrameBuffer* framebuffer) const
+{
+	std::cout << framebuffer->name << std::endl;
+	//std::cout << params.baseTexture->name << std::endl;
+	//std::cout << params.depthTexture->name << std::endl;
+	std::cout << params.previousTexture_0->name << std::endl;
+	//std::cout << params.previousTexture_1->name << std::endl;
+	//std::cout << params.previousTexture_2->name << std::endl;
+	std::cout << params.firstPass << std::endl;
+	std::cout << params.lastPass << std::endl;
+}
+
 void Renderer::PingPongPass() const
 {
 	PostProcessingFactory instance = PostProcessingFactory::getInstance();
@@ -62,6 +74,7 @@ void Renderer::PingPongPass() const
 	std::vector<std::shared_ptr<PostProcessing>> postProcessingQueue = instance.GetPostProcessingQueue();
 
 	glDisable(GL_DEPTH_TEST);
+
 	for (int i = 0; i < postProcessingQueue.size(); i++) {
 
 		auto currentEffect = postProcessingQueue[i];
@@ -84,20 +97,31 @@ void Renderer::PingPongPass() const
 		if (i % 2 == 0) {
 			params.previousTexture_0 = textureBuffer_A;
 			params.previousTexture_1 = attachment1;
+			params.previousTexture_2 = attachment2;
 			params.nextFrameBuffer = frameBuffer_B;
 			usedTexture = textureBuffer_A;
 
 			frameBuffer_A->Unbind();
+
+			if (printNextframeData) {
+				PrintData(params, frameBuffer_A);
+			}
 		}
 		else
 		{
 			params.previousTexture_0 = textureBuffer_B;
 			params.previousTexture_1 = attachment1;
+			params.previousTexture_2 = attachment2;
 			params.nextFrameBuffer = frameBuffer_A;
 			usedTexture = textureBuffer_B;
 
 			frameBuffer_B->Unbind();
+
+			if (printNextframeData) {
+				PrintData(params, frameBuffer_B);
+			}
 		}
+
 		currentEffect->BeforeRender(params);
 		Draw(*postProcessingVA, *postProcessingIB, *currentEffect->GetShader());
 		currentEffect->AfterRender(params);
@@ -132,9 +156,10 @@ void Renderer::InitializePostProcessing()
 
 	// ----------------------------------------------------------------------------- //
 
-	baseFBO = new FrameBuffer(GL_FRAMEBUFFER);
+	baseFBO = new FrameBuffer(GL_FRAMEBUFFER, "baseFBO");
 
 	baseTexture = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	baseTexture->name = "baseTexture";
 	baseTexture->Unbind();
 
 	baseTexture->AttachToFrameBuffer(GL_FRAMEBUFFER);
@@ -149,6 +174,7 @@ void Renderer::InitializePostProcessing()
 		RESOLUTION.y,
 		true);
 
+	depthTexture->name = "depthTexture";
 	depthTexture->Unbind();
 	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
 
@@ -156,15 +182,22 @@ void Renderer::InitializePostProcessing()
 
 	// ----------------------------------------------------------------------------- //
 
-	frameBuffer_A = new FrameBuffer(GL_FRAMEBUFFER);
+	frameBuffer_A = new FrameBuffer(GL_FRAMEBUFFER, "frameBuffer_A");
 
 	textureBuffer_A = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	textureBuffer_A->name = "textureBuffer_A";
 	textureBuffer_A->Unbind();
 	textureBuffer_A->AttachToFrameBuffer(GL_FRAMEBUFFER);
 
 	attachment1 = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	attachment1->name = "attachment1";
 	attachment1->Unbind();
 	attachment1->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1);
+
+	attachment2 = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	attachment2->name = "attachment2";
+	attachment2->Unbind();
+	attachment2->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2);
 
 	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
 
@@ -172,14 +205,17 @@ void Renderer::InitializePostProcessing()
 
 	// ----------------------------------------------------------------------------- //
 
-	frameBuffer_B = new FrameBuffer(GL_FRAMEBUFFER);
+	frameBuffer_B = new FrameBuffer(GL_FRAMEBUFFER, "frameBuffer_B");
 
 	textureBuffer_B = new TextureBuffer(GL_TEXTURE_2D, RESOLUTION.x, RESOLUTION.y);
+	textureBuffer_B->name = "textureBuffer_B";
 	textureBuffer_B->Unbind();
 	textureBuffer_B->AttachToFrameBuffer(GL_FRAMEBUFFER);
 
 
 	attachment1->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1);
+
+	attachment2->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2);
 
 	depthTexture->AttachToFrameBuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT);
 
@@ -193,14 +229,31 @@ void Renderer::InitializePostProcessing()
 	combineShader = new Shader(SHADERPATH + "PostProcessing/CombineShader.vert", SHADERPATH + "PostProcessing/CombineShader.frag");
 	// ----------------------------------------------------------------------------- //
 
-	std::vector<float> gausianKernelHor = { 0.06136f, 0.24477f, 0.38774f, 0.24477f, 0.06136f };
-
+	std::vector<float> gausianKernelHor = {
+		0.009167f,  // offset -5
+		0.014264f,  // offset -4
+		0.021596f,  // offset -3
+		0.031429f,  // offset -2
+		0.043937f,  // offset -1
+		0.058549f,  // offset  0 (center)
+		0.043937f,  // offset +1
+		0.031429f,  // offset +2
+		0.021596f,  // offset +3
+		0.014264f,  // offset +4
+		0.009167f   // offset +5
+	};
 	std::vector<glm::vec2> gausianKernelOffsetsHor = {
-		glm::vec2((2.0f / (RESOLUTION.x / 4)), 0.0f),
-		glm::vec2((1.0f / (RESOLUTION.x / 4)), 0.0f),
+		glm::vec2((5.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2((4.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2((3.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2((2.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2((1.0f / (RESOLUTION.x / 2)), 0.0f),
 		glm::vec2(0.0f,  0.0f),
-		glm::vec2(-(1.0f / (RESOLUTION.x / 4)), 0.0f),
-		glm::vec2(-(2.0f / (RESOLUTION.x / 4)), 0.0f)
+		glm::vec2(-(1.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2(-(2.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2(-(3.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2(-(4.0f / (RESOLUTION.x / 2)), 0.0f),
+		glm::vec2(-(5.0f / (RESOLUTION.x / 2)), 0.0f)
 	};
 
 	auto gausianHor = PostProcessingFactory::GetKnownEffect("GaussianBlurPassHorizontal");
@@ -211,16 +264,32 @@ void Renderer::InitializePostProcessing()
 
 	PostProcessingFactory instance = PostProcessingFactory::getInstance();
 
-	instance.AddToQueue(gausianHor);
-
-	std::vector<float> gausianKernelVert = { 0.06136f, 0.24477f, 0.38774f, 0.24477f, 0.06136f };
+	std::vector<float> gausianKernelVert = {
+		0.009167f,  // offset -5
+		0.014264f,  // offset -4
+		0.021596f,  // offset -3
+		0.031429f,  // offset -2
+		0.043937f,  // offset -1
+		0.058549f,  // offset  0 (center)
+		0.043937f,  // offset +1
+		0.031429f,  // offset +2
+		0.021596f,  // offset +3
+		0.014264f,  // offset +4
+		0.009167f   // offset +5
+	};
 
 	std::vector<glm::vec2> gausianKernelOffsetsVert = {
-		glm::vec2(0.0f,  (2.0f / (RESOLUTION.y / 4))),
-		glm::vec2(0.0f,  (1.0f / (RESOLUTION.y / 4))),
+		glm::vec2(0.0f,  (5.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f,  (4.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f,  (3.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f,  (2.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f,  (1.0f / (RESOLUTION.y / 2))),
 		glm::vec2(0.0f,  0.0f),
-		glm::vec2(0.0f, -(1.0f / (RESOLUTION.y / 4))),
-		glm::vec2(0.0f, -(2.0f / (RESOLUTION.y / 4)))
+		glm::vec2(0.0f, -(1.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f, -(2.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f, -(3.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f, -(4.0f / (RESOLUTION.y / 2))),
+		glm::vec2(0.0f, -(5.0f / (RESOLUTION.y / 2)))
 	};
 
 
@@ -246,7 +315,6 @@ void Renderer::Draw(Scene* scene, GameObject* go, bool recursive) const
 	std::vector<RenderObject*> renderObjects = go->GetRenderObjects();
 
 	for (int i = 0; i < renderObjects.size(); i++) {
-
 		Draw(scene, *renderObjects[i], go->GetTransform(), camera->GetViewMatrix(), projection);
 	}
 
@@ -283,4 +351,9 @@ void Renderer::Clear()
 void Renderer::SetActiveCamera(Camera* camera)
 {
 	this->camera = camera;
+}
+
+void Renderer::SetPrintData(bool print)
+{
+	printNextframeData = print;
 }

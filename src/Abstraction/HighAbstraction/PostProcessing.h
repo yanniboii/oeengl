@@ -10,6 +10,7 @@
 struct PostProcessingParams {
 	TextureBuffer* previousTexture_0;
 	TextureBuffer* previousTexture_1;
+	TextureBuffer* previousTexture_2;
 	TextureBuffer* baseTexture;
 	TextureBuffer* depthTexture;
 

@@ -18,7 +18,7 @@ void HDRPass::BeforeRender(const PostProcessingParams params)
 	else
 		params.nextFrameBuffer->Bind();
 
-	GLenum drawBuffers[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	GLenum drawBuffers[2] = { GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT0 };
 	glDrawBuffers(2, drawBuffers);
 
 	shader->Use();
@@ -41,5 +41,7 @@ void HDRPass::BeforeRender(const PostProcessingParams params)
 
 void HDRPass::AfterRender(const PostProcessingParams params)
 {
+	GLenum drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, drawBuffers);
 
 }

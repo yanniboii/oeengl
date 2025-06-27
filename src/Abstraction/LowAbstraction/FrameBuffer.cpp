@@ -1,8 +1,8 @@
 #include "FrameBuffer.h"
 #include <iostream>
 
-FrameBuffer::FrameBuffer(GLenum target)
-	:target(target)
+FrameBuffer::FrameBuffer(GLenum target, std::string name)
+	:target(target), name(name)
 {
 	glGenFramebuffers(1, &m_RendererID);
 	glBindFramebuffer(this->target, m_RendererID);

@@ -27,7 +27,6 @@ void PostProcessingFactory::AddPingPongToQueue(std::shared_ptr<PostProcessing> e
 	unsigned int position)
 {
 	CheckOutOfRangeVector(postProcessingQueue.size(), position);
-
 	for (int i = 0; i < pingPongAmount; i++) {
 		postProcessingQueue.insert(postProcessingQueue.begin() + position + i, effect_1);
 		postProcessingQueue.insert(postProcessingQueue.begin() + position + i + 1, effect_2);

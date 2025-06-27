@@ -172,12 +172,18 @@ int main(void)
 	{
 		renderer.Clear();
 		float val = (glm::cos(glm::radians(glfwGetTime()) * 70) + 1) / 2.0f;
-		light->SetQuadraticAttenuation(0.2f);
-		light->SetLinearAttenuation(val * 200);
+		light->SetQuadraticAttenuation(val);
+		light->SetLinearAttenuation(val * 20);
+
+		if (glfwGetKey(window, GLFW_KEY_P)) {
+			renderer.SetPrintData(true);
+		}
 
 		camera->Update(window);
 
 		renderer.Draw(scene);
+
+		renderer.SetPrintData(false);
 
 		UpdateWindowTitle(window, GetFPS());
 

@@ -19,12 +19,16 @@ public:
 	void Draw(Scene* scene, RenderObject& ro, glm::mat4 model, glm::mat4 view, glm::mat4 projection) const;
 	void Draw(Mesh& mesh, const Shader& shader) const;
 
+	void PrintData(PostProcessingParams params, FrameBuffer* framebuffer) const;
 
 	void InitializePostProcessing();
 
 	void Clear();
 
 	void SetActiveCamera(Camera* camera);
+
+	void SetPrintData(bool print);
+
 private:
 	Camera* camera;
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)RESOLUTION.x / RESOLUTION.y, 0.1f, 100.0f);
@@ -44,6 +48,7 @@ private:
 	TextureBuffer* baseTexture;
 
 	TextureBuffer* attachment1;
+	TextureBuffer* attachment2;
 	TextureBuffer* depthTexture;
 
 	Shader* screenShader;
@@ -52,4 +57,6 @@ private:
 	Shader* combineShader;
 
 	std::vector<PostProcessing*> postProccessing;
+
+	bool printNextframeData = false;
 };

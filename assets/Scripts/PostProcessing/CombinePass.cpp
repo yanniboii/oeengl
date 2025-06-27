@@ -20,7 +20,7 @@ void CombinePass::BeforeRender(const PostProcessingParams params)
 
 	shader->Use();
 
-	params.baseTexture->Bind(GL_TEXTURE0);
+	params.previousTexture_0->Bind(GL_TEXTURE0);
 	shader->SetInt("texture1", 0);
 
 	params.previousTexture_1->Bind(GL_TEXTURE1);

@@ -35,7 +35,7 @@ void GaussianBlurPass::BeforeRender(const PostProcessingParams params)
 	params.baseTexture->Bind(GL_TEXTURE1);
 	shader->SetInt("baseTex", 1);
 
-	params.previousTexture_1->Bind(GL_TEXTURE0);
+	params.previousTexture_0->Bind(GL_TEXTURE0);
 	shader->SetInt("colorTex", 0);
 }
 
